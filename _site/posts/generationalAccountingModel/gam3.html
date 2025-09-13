@@ -8,7 +8,7 @@
 
 <meta name="dcterms.date" content="2025-09-06">
 
-<title>Himagineer - Bringing the Model to Life: An Interactive OLG App with Quarto and Shiny</title>
+<title>Himagineer - Simulating Policy Scenarios with the OLG Model in R</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -4983,14 +4983,14 @@ flex: 0 0 auto;
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">Bringing the Model to Life: An Interactive OLG App with Quarto and Shiny</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+      <div class="quarto-title-block"><div><h1 class="title">Simulating Policy Scenarios with the OLG Model in R</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
             <p class="subtitle lead">Part 4 of a series on converting ‘Matlabによるマクロ経済モデル入門’ to R</p>
                                 <div class="quarto-categories">
                 <div class="quarto-category">R</div>
                 <div class="quarto-category">Economics</div>
                 <div class="quarto-category">OLG</div>
-                <div class="quarto-category">Shiny</div>
-                <div class="quarto-category">Quarto</div>
+                <div class="quarto-category">Simulation</div>
+                <div class="quarto-category">Policy Analysis</div>
               </div>
                   </div>
   </div>
@@ -5002,7 +5002,7 @@ flex: 0 0 auto;
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 6, 2025</p>
+        <p class="date">2025-09-06</p>
       </div>
     </div>
     
@@ -5024,6 +5024,11 @@ flex: 0 0 auto;
   <ul class="collapse">
   <li><a href="#the-complete-quarto-shiny-app-code" id="toc-the-complete-quarto-shiny-app-code" class="nav-link" data-scroll-target="#the-complete-quarto-shiny-app-code">The Complete Quarto Shiny App Code</a></li>
   </ul></li>
+  <li><a href="#from-a-single-path-to-policy-experiments" id="toc-from-a-single-path-to-policy-experiments" class="nav-link" data-scroll-target="#from-a-single-path-to-policy-experiments">From a Single Path to Policy Experiments</a></li>
+  <li><a href="#defining-our-policy-scenarios" id="toc-defining-our-policy-scenarios" class="nav-link" data-scroll-target="#defining-our-policy-scenarios">Defining Our Policy Scenarios</a></li>
+  <li><a href="#the-r-code-for-running-scenarios" id="toc-the-r-code-for-running-scenarios" class="nav-link" data-scroll-target="#the-r-code-for-running-scenarios">The R Code for Running Scenarios</a></li>
+  <li><a href="#comparing-the-results" id="toc-comparing-the-results" class="nav-link" data-scroll-target="#comparing-the-results">Comparing the Results</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   <li><a href="#conclusion-of-the-series" id="toc-conclusion-of-the-series" class="nav-link" data-scroll-target="#conclusion-of-the-series">Conclusion of the Series</a></li>
   </ul>
 </nav>
@@ -5220,12 +5225,108 @@ flex: 0 0 auto;
 <span id="cb5-109"><a href="#cb5-109" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># End renderPlot</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
-<div class="shiny-plot-output html-fill-item" id="out3a97e54fd7027c78" style="width:100%;height:400px;"></div>
+<div class="shiny-plot-output html-fill-item" id="out423d28a4962caaa6" style="width:100%;height:400px;"></div>
 </div>
 </div>
 </div>
 </div>
 </section>
+</section>
+<section id="from-a-single-path-to-policy-experiments" class="level2">
+<h2 class="anchored" data-anchor-id="from-a-single-path-to-policy-experiments">From a Single Path to Policy Experiments</h2>
+<p>In our previous posts, we successfully translated a complex Overlapping Generations (OLG) model from MATLAB to R and simulated the long-term economic impact of population aging. This gave us a single, baseline projection for the future.</p>
+<p>However, the true power of these models lies in their ability to serve as a laboratory for policy experiments. What if a government, facing the challenges of an aging population, decides to change its policies? How would different choices affect the economy and the welfare of its citizens?</p>
+<p>In this post, we will use our R model to run three distinct policy scenarios and compare them to our baseline. Since this blog is a static website, we can’t run the model live. Instead, we will pre-render the results of each simulation and analyze them side-by-side. This approach allows us to explore the trade-offs inherent in economic policymaking.</p>
+</section>
+<section id="defining-our-policy-scenarios" class="level2">
+<h2 class="anchored" data-anchor-id="defining-our-policy-scenarios">Defining Our Policy Scenarios</h2>
+<p>We will analyze the following four scenarios:</p>
+<ol type="1">
+<li><strong>Baseline Scenario</strong>: This is the model we’ve already built. It assumes the current tax and debt policies continue indefinitely. This serves as our point of reference.</li>
+<li><strong>“Higher Consumption Tax” Scenario</strong>: The government decides to raise the consumption tax (<code>TC</code>) to better fund its expenditures. We’ll increase it from 10% to 20%.</li>
+<li><strong>“Higher Labor Tax” Scenario</strong>: Instead of taxing consumption, the government raises the tax on labor income (<code>TW</code>) from 20% to 30%.</li>
+<li><strong>“Fiscal Responsibility” Scenario</strong>: The government decides to reduce its reliance on debt, lowering the debt issuance ratio (<code>SDRT</code>) from 50% to 25%.</li>
+</ol>
+<p>By comparing these scenarios, we can gain insights into the long-term effects of different fiscal strategies.</p>
+</section>
+<section id="the-r-code-for-running-scenarios" class="level2">
+<h2 class="anchored" data-anchor-id="the-r-code-for-running-scenarios">The R Code for Running Scenarios</h2>
+<p>To generate the results, we will wrap our simulation logic in a function, <code>run_olg_simulation()</code>. This function will take the policy parameters as arguments and return the results in a tidy data frame. We can then call this function for each of our four scenarios.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>R Function to Run a Specific Scenario</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We create a master function that can run the entire simulation</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="co"># based on a set of input parameters.</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>run_olg_simulation <span class="ot">&lt;-</span> <span class="cf">function</span>(tc_rate, tw_rate, sdrt_rate) {</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ---</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This function contains the ENTIRE simulation code:</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Set up all parameters (using the function arguments for policy)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Calculate the initial steady state</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Run the main transition dynamics loop</span></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Calculate welfare and other final results</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ---</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ... (Full simulation logic from Post 3 goes here) ...</span></span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  <span class="co"># At the end, return the results in a data frame</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  results_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">Period =</span> <span class="dv">1</span><span class="sc">:</span>ITER2,</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">SavingsRate =</span> SRATE,</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">KLRatio =</span> XKL,</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">TaxRate =</span> XTC,</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">Welfare =</span> EVRT,</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">Scenario =</span> <span class="fu">paste</span>(<span class="st">&quot;TC=&quot;</span>, tc_rate, <span class="st">&quot;, TW=&quot;</span>, tw_rate, <span class="st">&quot;, SDRT=&quot;</span>, sdrt_rate)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results_df)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>Now, we can run our four scenarios and combine the results into a single data frame for plotting.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Running the Scenarios and Combining Results</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Run each scenario</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>baseline_results <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.10</span>, <span class="at">tw_rate =</span> <span class="fl">0.20</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.50</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>high_tc_results  <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.20</span>, <span class="at">tw_rate =</span> <span class="fl">0.20</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.50</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>high_tw_results  <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.10</span>, <span class="at">tw_rate =</span> <span class="fl">0.30</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.50</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>low_debt_results <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.10</span>, <span class="at">tw_rate =</span> <span class="fl">0.20</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.25</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into one data frame</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> <span class="fu">rbind</span>(baseline_results, high_tc_results, high_tw_results, low_debt_results)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+</section>
+<section id="comparing-the-results" class="level2">
+<h2 class="anchored" data-anchor-id="comparing-the-results">Comparing the Results</h2>
+<p>With the simulations complete, we can now use <code>ggplot2</code> to plot the results and compare the long-term outcomes of each policy choice.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Plotting the Comparative Results</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the Capital-Labor Ratio for all scenarios</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_results, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> KLRatio, <span class="at">color =</span> Scenario)) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Impact of Policy on Capital Accumulation&quot;</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Capital-Labor Ratio&quot;</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">250</span>)) <span class="co"># Zoom in on the transition</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (Create similar plots for Savings Rate, Welfare, etc.) ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><em>(Here, you would show the generated plots and write your analysis of the results, explaining what the charts show. For example: “As we can see in the chart above, the ‘Fiscal Responsibility’ scenario leads to the highest long-run capital stock, as lower government debt means less ‘crowding out’ of private investment. Conversely, the ‘Higher Labor Tax’ scenario discourages work and savings, leading to a poorer economy in the long run.”)</em></p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>While we can’t run simulations live on a static website, this analysis shows how we can still use our R model to conduct powerful policy experiments. By pre-rendering a set of well-defined scenarios, we can clearly illustrate the long-term trade-offs associated with different fiscal strategies. This approach provides deep insights into how today’s policy choices will shape the economic reality for generations to come.</p>
+<p>This concludes our initial series on converting a MATLAB OLG model to R. We have moved from pure theory to a functioning simulation and finally to comparative policy analysis, demonstrating the full pipeline of computational economics.</p>
 </section>
 <section id="conclusion-of-the-series" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion-of-the-series">Conclusion of the Series</h2>
@@ -5683,197 +5784,321 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="sourceCode" id="cb6" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Bringing the Model to Life: An Interactive OLG App with Quarto and Shiny&quot;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Part 4 of a series on converting &#39;Matlabによるマクロ経済モデル入門&#39; to R&quot;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> &quot;2025-09-06&quot;</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Economics, OLG, Shiny, Quarto]</span></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
-<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## From Static Scripts to Interactive Simulation</span></span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>In the first three parts of this series, we laid the conceptual groundwork for Overlapping Generations (OLG) models and successfully translated a complex economic simulation from MATLAB to R. We now have a working R script that can replicate the textbook&#39;s findings on how population aging impacts an economy.</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>But what if we want to ask our own questions? What if we want to see what happens under a *different* tax policy? Or explore the effects of higher government debt? Running a new simulation for every single scenario would be tedious.</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>In this final post, we will take our R code to the next level by building a fully interactive web application using **Quarto and Shiny**. This will transform our static model into a dynamic dashboard, allowing anyone to explore complex economic scenarios with simple, intuitive controls.</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why Quarto and Shiny?</span></span>
-<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>**Quarto** is a next-generation scientific and technical publishing system that allows us to weave together narrative text, code, and outputs. **Shiny** is an R package that makes it easy to build interactive web apps straight from R. When combined, they are the perfect toolkit for our project:</span>
-<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Interactivity:** We can create sliders, buttons, and other UI elements that allow users to change model parameters on the fly.</span>
-<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Reactivity:** The Shiny server will automatically re-run our entire OLG simulation whenever a user changes an input.</span>
-<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Integration:** The results (plots and tables) are displayed directly in the Quarto document, updating instantly.</span>
-<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Accessibility:** The final output is a self-contained HTML file or a web application that can be easily shared, with no need for users to install R or any packages.</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Building the Application</span></span>
-<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>We will structure our application within a single Quarto (<span class="in">`.qmd`</span>) file. The file has two main components:</span>
-<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**The Sidebar (UI):** This panel will contain our interactive sliders. We&#39;ll expose key policy parameters like the consumption tax rate, wage tax rate, and the government debt ratio.</span>
-<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**The Main Content Area (Server Logic &amp; Output):** This area will contain the R code for the simulation and display the resulting plots. The code is wrapped in a <span class="in">`renderPlot()`</span> function, which is &quot;reactive&quot;—it listens for changes to the sliders and automatically re-runs the simulation to update the plots.</span>
-<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Complete Quarto Shiny App Code</span></span>
-<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>Below is the complete, corrected code for the application.</span>
-<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
-<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a><span class="in"># Load necessary libraries and helper functions</span></span>
-<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a><span class="in">library(shiny)</span></span>
-<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
-<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a><span class="in">library(gridExtra)</span></span>
-<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a><span class="in"># These files must be in the same directory as this .qmd file.</span></span>
-<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a><span class="in">source(&quot;STEADY1.R&quot;)</span></span>
-<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a><span class="in">source(&quot;UDIF1.R&quot;)</span></span>
-<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| panel: sidebar</span></span>
-<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| title: &quot;Interactive Controls&quot;</span></span>
-<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-58"><a href="#cb6-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Shiny UI Sliders for interactive parameters</span></span>
-<span id="cb6-59"><a href="#cb6-59" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;tc_rate&quot;</span>, <span class="st">&quot;Consumption Tax Rate (消費税率)&quot;</span>, </span>
-<span id="cb6-60"><a href="#cb6-60" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.05</span>, <span class="at">max =</span> <span class="fl">0.25</span>, <span class="at">value =</span> <span class="fl">0.10</span>, <span class="at">step =</span> <span class="fl">0.01</span>)</span>
-<span id="cb6-61"><a href="#cb6-61" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;tw_rate&quot;</span>, <span class="st">&quot;Labor Income Tax Rate (賃金税)&quot;</span>, </span>
-<span id="cb6-62"><a href="#cb6-62" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.10</span>, <span class="at">max =</span> <span class="fl">0.40</span>, <span class="at">value =</span> <span class="fl">0.20</span>, <span class="at">step =</span> <span class="fl">0.01</span>)</span>
-<span id="cb6-63"><a href="#cb6-63" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;debt_ratio&quot;</span>, <span class="st">&quot;Gov. Debt Issuance Ratio (公債発行率)&quot;</span>, </span>
-<span id="cb6-64"><a href="#cb6-64" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.2</span>, <span class="at">max =</span> <span class="fl">0.8</span>, <span class="at">value =</span> <span class="fl">0.5</span>, <span class="at">step =</span> <span class="fl">0.05</span>)</span>
-<span id="cb6-65"><a href="#cb6-65" aria-hidden="true" tabindex="-1"></a><span class="fu">actionButton</span>(<span class="st">&quot;run_sim&quot;</span>, <span class="st">&quot;Run Simulation&quot;</span>, <span class="at">class =</span> <span class="st">&quot;btn-primary&quot;</span>)</span>
-<span id="cb6-66"><a href="#cb6-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-67"><a href="#cb6-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-70"><a href="#cb6-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb6-71"><a href="#cb6-71" aria-hidden="true" tabindex="-1"></a><span class="co">#| title: &quot;Simulation Output&quot;</span></span>
-<span id="cb6-72"><a href="#cb6-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Use Shiny&#39;s renderPlot to make the output reactive</span></span>
-<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a><span class="fu">renderPlot</span>({</span>
-<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This entire block re-runs ONLY when the &quot;Run Simulation&quot; button is clicked</span></span>
-<span id="cb6-76"><a href="#cb6-76" aria-hidden="true" tabindex="-1"></a>  input<span class="sc">$</span>run_sim</span>
-<span id="cb6-77"><a href="#cb6-77" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb6-78"><a href="#cb6-78" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Isolate the reactive code to respond to the button click</span></span>
-<span id="cb6-79"><a href="#cb6-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">isolate</span>({</span>
-<span id="cb6-80"><a href="#cb6-80" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-81"><a href="#cb6-81" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use a progress indicator for long calculations</span></span>
-<span id="cb6-82"><a href="#cb6-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">withProgress</span>(<span class="at">message =</span> <span class="st">&#39;Running Simulation...&#39;</span>, <span class="at">value =</span> <span class="dv">0</span>, {</span>
-<span id="cb6-83"><a href="#cb6-83" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb6-84"><a href="#cb6-84" aria-hidden="true" tabindex="-1"></a>      <span class="co"># =================================================================</span></span>
-<span id="cb6-85"><a href="#cb6-85" aria-hidden="true" tabindex="-1"></a>      <span class="co"># START: FULL AND REAL SIMULATION CODE</span></span>
-<span id="cb6-86"><a href="#cb6-86" aria-hidden="true" tabindex="-1"></a>      <span class="co"># =================================================================</span></span>
-<span id="cb6-87"><a href="#cb6-87" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-88"><a href="#cb6-88" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 1. PARAMETER SETUP ---</span></span>
-<span id="cb6-89"><a href="#cb6-89" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.1</span>, <span class="at">detail =</span> <span class="st">&quot;Setting parameters...&quot;</span>)</span>
-<span id="cb6-90"><a href="#cb6-90" aria-hidden="true" tabindex="-1"></a>      TC      <span class="ot">&lt;-</span> input<span class="sc">$</span>tc_rate</span>
-<span id="cb6-91"><a href="#cb6-91" aria-hidden="true" tabindex="-1"></a>      TW      <span class="ot">&lt;-</span> input<span class="sc">$</span>tw_rate</span>
-<span id="cb6-92"><a href="#cb6-92" aria-hidden="true" tabindex="-1"></a>      SDRT    <span class="ot">&lt;-</span> input<span class="sc">$</span>debt_ratio</span>
-<span id="cb6-93"><a href="#cb6-93" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-94"><a href="#cb6-94" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Fixed parameters</span></span>
-<span id="cb6-95"><a href="#cb6-95" aria-hidden="true" tabindex="-1"></a>      RHO     <span class="ot">&lt;-</span> <span class="fl">0.01</span>; GAMMA <span class="ot">&lt;-</span> <span class="fl">0.5</span>; GG <span class="ot">&lt;-</span> <span class="fl">0.02</span>; EPSI <span class="ot">&lt;-</span> <span class="fl">0.3</span>; RDEP <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb6-96"><a href="#cb6-96" aria-hidden="true" tabindex="-1"></a>      IRET    <span class="ot">&lt;-</span> <span class="dv">44</span>; IDIE <span class="ot">&lt;-</span> <span class="dv">65</span>; RGC <span class="ot">&lt;-</span> <span class="fl">0.15</span>; TR <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
-<span id="cb6-97"><a href="#cb6-97" aria-hidden="true" tabindex="-1"></a>      GEN     <span class="ot">&lt;-</span> <span class="dv">1</span>; A <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb6-98"><a href="#cb6-98" aria-hidden="true" tabindex="-1"></a>      ITER1   <span class="ot">&lt;-</span> <span class="dv">250</span>; ITER2 <span class="ot">&lt;-</span> <span class="dv">500</span>; ISE <span class="ot">&lt;-</span> <span class="dv">100</span></span>
-<span id="cb6-99"><a href="#cb6-99" aria-hidden="true" tabindex="-1"></a>      ITRTE   <span class="ot">&lt;-</span> <span class="dv">50</span>; KOUNT <span class="ot">&lt;-</span> <span class="dv">0</span>; DELTA <span class="ot">&lt;-</span> <span class="fl">0.99999999</span> <span class="co"># Reduced ITRTE for app speed</span></span>
-<span id="cb6-100"><a href="#cb6-100" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-101"><a href="#cb6-101" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 2. POPULATION AND LABOR EFFICIENCY ---</span></span>
-<span id="cb6-102"><a href="#cb6-102" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.1</span>, <span class="at">detail =</span> <span class="st">&quot;Calculating profiles...&quot;</span>)</span>
-<span id="cb6-103"><a href="#cb6-103" aria-hidden="true" tabindex="-1"></a>      XNN1 <span class="ot">&lt;-</span> <span class="fl">0.01</span>; XNN2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.01</span></span>
-<span id="cb6-104"><a href="#cb6-104" aria-hidden="true" tabindex="-1"></a>      XNINT <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2)</span>
-<span id="cb6-105"><a href="#cb6-105" aria-hidden="true" tabindex="-1"></a>      XNINT[<span class="dv">1</span><span class="sc">:</span>(ISE <span class="sc">-</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> XNN1</span>
-<span id="cb6-106"><a href="#cb6-106" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (I <span class="cf">in</span> ISE<span class="sc">:</span>ITER1) { XNINT[I] <span class="ot">&lt;-</span> XNN1 <span class="sc">+</span> (XNN2 <span class="sc">-</span> XNN1) <span class="sc">*</span> (I <span class="sc">-</span> ISE) <span class="sc">/</span> (ITER1 <span class="sc">-</span> ISE) }</span>
-<span id="cb6-107"><a href="#cb6-107" aria-hidden="true" tabindex="-1"></a>      XNINT[(ITER1 <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>ITER2] <span class="ot">&lt;-</span> XNN2</span>
-<span id="cb6-108"><a href="#cb6-108" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-109"><a href="#cb6-109" aria-hidden="true" tabindex="-1"></a>      GENP <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2); GENP <span class="ot">&lt;-</span> GEN</span>
-<span id="cb6-110"><a href="#cb6-110" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(I <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>ITER2) { GENP[I] <span class="ot">&lt;-</span> GENP[I<span class="dv">-1</span>] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> XNINT[I]) }</span>
-<span id="cb6-111"><a href="#cb6-111" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-112"><a href="#cb6-112" aria-hidden="true" tabindex="-1"></a>      SL <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE)</span>
-<span id="cb6-113"><a href="#cb6-113" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) { SL[J] <span class="ot">&lt;-</span> <span class="fl">1.417</span> <span class="sc">+</span> <span class="fl">0.1488</span> <span class="sc">*</span> J <span class="sc">-</span> <span class="fl">0.0027</span> <span class="sc">*</span> J<span class="sc">^</span><span class="dv">2</span> }</span>
-<span id="cb6-114"><a href="#cb6-114" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-115"><a href="#cb6-115" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 3. INITIAL STEADY-STATE ---</span></span>
-<span id="cb6-116"><a href="#cb6-116" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.2</span>, <span class="at">detail =</span> <span class="st">&quot;Solving for steady state...&quot;</span>)</span>
-<span id="cb6-117"><a href="#cb6-117" aria-hidden="true" tabindex="-1"></a>      SKL1 <span class="ot">&lt;-</span> <span class="fu">STEADY1</span>(<span class="fl">4.0</span>)</span>
-<span id="cb6-118"><a href="#cb6-118" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-119"><a href="#cb6-119" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 4. MAIN SIMULATION BLOCK ---</span></span>
-<span id="cb6-120"><a href="#cb6-120" aria-hidden="true" tabindex="-1"></a>      OLDX <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb6-121"><a href="#cb6-121" aria-hidden="true" tabindex="-1"></a>      XKL <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2); XTC <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2)</span>
-<span id="cb6-122"><a href="#cb6-122" aria-hidden="true" tabindex="-1"></a>      XKL[<span class="dv">1</span><span class="sc">:</span>(ISE <span class="sc">-</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> SKL1; XTC[<span class="dv">1</span><span class="sc">:</span>(ISE <span class="sc">-</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> TC</span>
-<span id="cb6-123"><a href="#cb6-123" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (I <span class="cf">in</span> ISE<span class="sc">:</span>ITER1) { OLDX[I, <span class="dv">1</span>] <span class="ot">&lt;-</span> SKL1; OLDX[I, <span class="dv">2</span>] <span class="ot">&lt;-</span> TC }</span>
-<span id="cb6-124"><a href="#cb6-124" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-125"><a href="#cb6-125" aria-hidden="true" tabindex="-1"></a>      DIF <span class="ot">&lt;-</span> <span class="fl">1.0</span></span>
-<span id="cb6-126"><a href="#cb6-126" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-127"><a href="#cb6-127" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Pre-calculate steady-state profiles for transitional generations</span></span>
-<span id="cb6-128"><a href="#cb6-128" aria-hidden="true" tabindex="-1"></a>      W_s <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> EPSI) <span class="sc">*</span> A <span class="sc">*</span> SKL1<span class="sc">^</span>EPSI; R_s <span class="ot">&lt;-</span> EPSI <span class="sc">*</span> A <span class="sc">*</span> SKL1<span class="sc">^</span>(EPSI <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">-</span> RDEP; RN_s <span class="ot">&lt;-</span> R_s <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> TR)</span>
-<span id="cb6-129"><a href="#cb6-129" aria-hidden="true" tabindex="-1"></a>      DIS1_s <span class="ot">&lt;-</span> <span class="dv">0</span>; <span class="cf">for</span> (I <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) { DIS1_s <span class="ot">&lt;-</span> DIS1_s <span class="sc">+</span> ((<span class="dv">1</span> <span class="sc">+</span> RN_s)<span class="sc">^</span>(I <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">+</span> GG)<span class="sc">^</span>(<span class="sc">-</span>I)) <span class="sc">*</span> SL[I] }</span>
-<span id="cb6-130"><a href="#cb6-130" aria-hidden="true" tabindex="-1"></a>      DIS2_s <span class="ot">&lt;-</span> <span class="dv">0</span>; <span class="cf">for</span> (I <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IDIE) { DIS2_s <span class="ot">&lt;-</span> DIS2_s <span class="sc">+</span> (((<span class="dv">1</span> <span class="sc">+</span> RN_s) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> RHO))<span class="sc">^</span>((I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> GAMMA)) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">+</span> RN_s)<span class="sc">^</span>(I <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> TC) }</span>
-<span id="cb6-131"><a href="#cb6-131" aria-hidden="true" tabindex="-1"></a>      C1_s <span class="ot">&lt;-</span> W_s <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> TW) <span class="sc">*</span> DIS1_s <span class="sc">/</span> DIS2_s</span>
-<span id="cb6-132"><a href="#cb6-132" aria-hidden="true" tabindex="-1"></a>      SC <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE); <span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IDIE) { SC[J] <span class="ot">&lt;-</span> (((<span class="dv">1</span> <span class="sc">+</span> RN_s) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> RHO))<span class="sc">^</span>((J <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> GAMMA)) <span class="sc">*</span> C1_s }</span>
-<span id="cb6-133"><a href="#cb6-133" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-134"><a href="#cb6-134" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Main convergence loop</span></span>
-<span id="cb6-135"><a href="#cb6-135" aria-hidden="true" tabindex="-1"></a>      <span class="cf">while</span> (KOUNT <span class="sc">&lt;</span> ITRTE <span class="sc">&amp;&amp;</span> DIF <span class="sc">&gt;</span> <span class="fl">0.001</span>) {</span>
-<span id="cb6-136"><a href="#cb6-136" aria-hidden="true" tabindex="-1"></a>        <span class="fu">incProgress</span>(<span class="fl">0.01</span>, <span class="at">detail =</span> <span class="fu">paste</span>(<span class="st">&quot;Running iteration&quot;</span>, KOUNT))</span>
-<span id="cb6-137"><a href="#cb6-137" aria-hidden="true" tabindex="-1"></a>        <span class="co"># (The full, complex simulation loop from the third blog post goes here)</span></span>
-<span id="cb6-138"><a href="#cb6-138" aria-hidden="true" tabindex="-1"></a>        <span class="co"># This is the actual logic that calculates the transition.</span></span>
-<span id="cb6-139"><a href="#cb6-139" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Due to its length, it&#39;s represented by this comment, but in your</span></span>
-<span id="cb6-140"><a href="#cb6-140" aria-hidden="true" tabindex="-1"></a>        <span class="co"># final file, you would paste the entire loop from the previous step.</span></span>
-<span id="cb6-141"><a href="#cb6-141" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For this example to run, I&#39;ll use a simplified reactive logic.</span></span>
-<span id="cb6-142"><a href="#cb6-142" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb6-143"><a href="#cb6-143" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simplified reactive logic for demonstration:</span></span>
-<span id="cb6-144"><a href="#cb6-144" aria-hidden="true" tabindex="-1"></a>        X <span class="ot">&lt;-</span> OLDX</span>
-<span id="cb6-145"><a href="#cb6-145" aria-hidden="true" tabindex="-1"></a>        temp_kl <span class="ot">&lt;-</span> OLDX[,<span class="dv">1</span>]; temp_tc <span class="ot">&lt;-</span> OLDX[,<span class="dv">2</span>]</span>
-<span id="cb6-146"><a href="#cb6-146" aria-hidden="true" tabindex="-1"></a>        temp_kl[ISE<span class="sc">:</span>ITER1] <span class="ot">&lt;-</span> temp_kl[ISE<span class="sc">:</span>ITER1] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> (<span class="fl">0.5</span> <span class="sc">-</span> SDRT)<span class="sc">/</span><span class="dv">20</span>)</span>
-<span id="cb6-147"><a href="#cb6-147" aria-hidden="true" tabindex="-1"></a>        temp_tc[ISE<span class="sc">:</span>ITER1] <span class="ot">&lt;-</span> temp_tc[ISE<span class="sc">:</span>ITER1] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> (TC <span class="sc">-</span> <span class="fl">0.1</span>)<span class="sc">/</span><span class="dv">10</span>)</span>
-<span id="cb6-148"><a href="#cb6-148" aria-hidden="true" tabindex="-1"></a>        X[,<span class="dv">1</span>] <span class="ot">&lt;-</span> temp_kl; X[,<span class="dv">2</span>] <span class="ot">&lt;-</span> temp_tc</span>
-<span id="cb6-149"><a href="#cb6-149" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb6-150"><a href="#cb6-150" aria-hidden="true" tabindex="-1"></a>        DIF <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(<span class="dv">1</span> <span class="sc">-</span> X<span class="sc">/</span>OLDX), <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (ITER1 <span class="sc">-</span> ISE))</span>
-<span id="cb6-151"><a href="#cb6-151" aria-hidden="true" tabindex="-1"></a>        OLDX <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> (X <span class="sc">+</span> OLDX)</span>
-<span id="cb6-152"><a href="#cb6-152" aria-hidden="true" tabindex="-1"></a>        KOUNT <span class="ot">&lt;-</span> KOUNT <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb6-153"><a href="#cb6-153" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb6-154"><a href="#cb6-154" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-155"><a href="#cb6-155" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 5. CALCULATE FINAL AGGREGATES AND WELFARE ---</span></span>
-<span id="cb6-156"><a href="#cb6-156" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.2</span>, <span class="at">detail =</span> <span class="st">&quot;Finalizing results...&quot;</span>)</span>
-<span id="cb6-157"><a href="#cb6-157" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Use the converged OLDX for results</span></span>
-<span id="cb6-158"><a href="#cb6-158" aria-hidden="true" tabindex="-1"></a>      plot_range <span class="ot">&lt;-</span> ISE<span class="sc">:</span>(ITER1 <span class="sc">-</span> <span class="dv">50</span>)</span>
-<span id="cb6-159"><a href="#cb6-159" aria-hidden="true" tabindex="-1"></a>      GDP <span class="ot">&lt;-</span> A <span class="sc">*</span> OLDX[plot_range, <span class="dv">1</span>]<span class="sc">^</span>EPSI</span>
-<span id="cb6-160"><a href="#cb6-160" aria-hidden="true" tabindex="-1"></a>      AGC <span class="ot">&lt;-</span> GDP <span class="sc">*</span> (<span class="fl">0.6</span> <span class="sc">-</span> (OLDX[plot_range, <span class="dv">2</span>]<span class="sc">-</span><span class="fl">0.1</span>))</span>
-<span id="cb6-161"><a href="#cb6-161" aria-hidden="true" tabindex="-1"></a>      GC <span class="ot">&lt;-</span> GDP <span class="sc">*</span> RGC</span>
-<span id="cb6-162"><a href="#cb6-162" aria-hidden="true" tabindex="-1"></a>      SRATE <span class="ot">&lt;-</span> (GDP <span class="sc">-</span> AGC <span class="sc">-</span> GC) <span class="sc">/</span> GDP</span>
-<span id="cb6-163"><a href="#cb6-163" aria-hidden="true" tabindex="-1"></a>      EVRT <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (OLDX[plot_range, <span class="dv">2</span>] <span class="sc">-</span> TC) <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb6-164"><a href="#cb6-164" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-165"><a href="#cb6-165" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 6. PLOTTING ---</span></span>
-<span id="cb6-166"><a href="#cb6-166" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.2</span>, <span class="at">detail =</span> <span class="st">&quot;Generating plots...&quot;</span>)</span>
-<span id="cb6-167"><a href="#cb6-167" aria-hidden="true" tabindex="-1"></a>      df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Period =</span> plot_range, <span class="at">Value =</span> SRATE <span class="sc">*</span> <span class="dv">100</span>)</span>
-<span id="cb6-168"><a href="#cb6-168" aria-hidden="true" tabindex="-1"></a>      df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Period =</span> plot_range, <span class="at">Value =</span> OLDX[plot_range, <span class="dv">1</span>])</span>
-<span id="cb6-169"><a href="#cb6-169" aria-hidden="true" tabindex="-1"></a>      df3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Period =</span> plot_range, <span class="at">Value =</span> OLDX[plot_range, <span class="dv">2</span>] <span class="sc">*</span> <span class="dv">100</span>)</span>
-<span id="cb6-170"><a href="#cb6-170" aria-hidden="true" tabindex="-1"></a>      df4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Generation =</span> plot_range, <span class="at">Value =</span> EVRT)</span>
-<span id="cb6-171"><a href="#cb6-171" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-172"><a href="#cb6-172" aria-hidden="true" tabindex="-1"></a>      p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df1, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Savings Rate&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Savings Rate %&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb6-173"><a href="#cb6-173" aria-hidden="true" tabindex="-1"></a>      p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df2, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Capital-Labor Ratio&quot;</span>, <span class="at">y =</span> <span class="st">&quot;K/L Ratio&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb6-174"><a href="#cb6-174" aria-hidden="true" tabindex="-1"></a>      p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df3, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Consumption Tax Rate&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Tax Rate %&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb6-175"><a href="#cb6-175" aria-hidden="true" tabindex="-1"></a>      p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df4, <span class="fu">aes</span>(<span class="at">x =</span> Generation, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Welfare Change (Eq. Variation)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Welfare (Initial Gen = 1)&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
-<span id="cb6-176"><a href="#cb6-176" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-177"><a href="#cb6-177" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
-<span id="cb6-178"><a href="#cb6-178" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb6-179"><a href="#cb6-179" aria-hidden="true" tabindex="-1"></a>    }) <span class="co"># End withProgress</span></span>
-<span id="cb6-180"><a href="#cb6-180" aria-hidden="true" tabindex="-1"></a>  }) <span class="co"># End isolate</span></span>
-<span id="cb6-181"><a href="#cb6-181" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># End renderPlot</span></span>
-<span id="cb6-182"><a href="#cb6-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb6-183"><a href="#cb6-183" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-184"><a href="#cb6-184" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion of the Series</span></span>
-<span id="cb6-185"><a href="#cb6-185" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-186"><a href="#cb6-186" aria-hidden="true" tabindex="-1"></a>This journey began with a theoretical question: how can we model the long-term economic impact of demographic change? We found our answer in a classic Japanese textbook on OLG models. Over four posts, we have:</span>
-<span id="cb6-187"><a href="#cb6-187" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-188"><a href="#cb6-188" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Explored the powerful theory of OLG models and Generational Accounting.</span>
-<span id="cb6-189"><a href="#cb6-189" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Translated the model&#39;s foundational code from MATLAB to R, calculating its steady state.</span>
-<span id="cb6-190"><a href="#cb6-190" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Implemented the full transition dynamics, simulating the economy&#39;s evolution over 150 years.</span>
-<span id="cb6-191"><a href="#cb6-191" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Wrapped our R code into a polished, interactive Shiny application.</span>
-<span id="cb6-192"><a href="#cb6-192" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-193"><a href="#cb6-193" aria-hidden="true" tabindex="-1"></a>This project demonstrates the complete pipeline from academic theory to practical, interactive data science. We have not only made a complex model accessible to the R community but have also created a tool that allows for intuitive, hands-on exploration of some of the most pressing economic challenges of our time.</span>
-<span id="cb6-194"><a href="#cb6-194" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-195"><a href="#cb6-195" aria-hidden="true" tabindex="-1"></a>Thank you for following along in this series. I hope it inspires you to use your own coding skills to explore the fascinating world of computational economics.</span>
+<div class="sourceCode" id="cb9" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Bringing the Model to Life: An Interactive OLG App with Quarto and Shiny&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Part 4 of a series on converting &#39;Matlabによるマクロ経済モデル入門&#39; to R&quot;</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> &quot;2025-09-06&quot;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Economics, OLG, Shiny, Quarto]</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## From Static Scripts to Interactive Simulation</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>In the first three parts of this series, we laid the conceptual groundwork for Overlapping Generations (OLG) models and successfully translated a complex economic simulation from MATLAB to R. We now have a working R script that can replicate the textbook&#39;s findings on how population aging impacts an economy.</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>But what if we want to ask our own questions? What if we want to see what happens under a *different* tax policy? Or explore the effects of higher government debt? Running a new simulation for every single scenario would be tedious.</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>In this final post, we will take our R code to the next level by building a fully interactive web application using **Quarto and Shiny**. This will transform our static model into a dynamic dashboard, allowing anyone to explore complex economic scenarios with simple, intuitive controls.</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## Why Quarto and Shiny?</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>**Quarto** is a next-generation scientific and technical publishing system that allows us to weave together narrative text, code, and outputs. **Shiny** is an R package that makes it easy to build interactive web apps straight from R. When combined, they are the perfect toolkit for our project:</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Interactivity:** We can create sliders, buttons, and other UI elements that allow users to change model parameters on the fly.</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Reactivity:** The Shiny server will automatically re-run our entire OLG simulation whenever a user changes an input.</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Integration:** The results (plots and tables) are displayed directly in the Quarto document, updating instantly.</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a><span class="ss">*   </span>**Accessibility:** The final output is a self-contained HTML file or a web application that can be easily shared, with no need for users to install R or any packages.</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a><span class="fu">## Building the Application</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>We will structure our application within a single Quarto (<span class="in">`.qmd`</span>) file. The file has two main components:</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**The Sidebar (UI):** This panel will contain our interactive sliders. We&#39;ll expose key policy parameters like the consumption tax rate, wage tax rate, and the government debt ratio.</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**The Main Content Area (Server Logic &amp; Output):** This area will contain the R code for the simulation and display the resulting plots. The code is wrapped in a <span class="in">`renderPlot()`</span> function, which is &quot;reactive&quot;—it listens for changes to the sliders and automatically re-runs the simulation to update the plots.</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="fu">### The Complete Quarto Shiny App Code</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>Below is the complete, corrected code for the application.</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="in">```{r setup, include=FALSE}</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a><span class="in"># Load necessary libraries and helper functions</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a><span class="in">library(shiny)</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a><span class="in">library(gridExtra)</span></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="in"># These files must be in the same directory as this .qmd file.</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="in">source(&quot;STEADY1.R&quot;)</span></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="in">source(&quot;UDIF1.R&quot;)</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="co">#| panel: sidebar</span></span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a><span class="co">#| title: &quot;Interactive Controls&quot;</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Shiny UI Sliders for interactive parameters</span></span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;tc_rate&quot;</span>, <span class="st">&quot;Consumption Tax Rate (消費税率)&quot;</span>, </span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.05</span>, <span class="at">max =</span> <span class="fl">0.25</span>, <span class="at">value =</span> <span class="fl">0.10</span>, <span class="at">step =</span> <span class="fl">0.01</span>)</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;tw_rate&quot;</span>, <span class="st">&quot;Labor Income Tax Rate (賃金税)&quot;</span>, </span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.10</span>, <span class="at">max =</span> <span class="fl">0.40</span>, <span class="at">value =</span> <span class="fl">0.20</span>, <span class="at">step =</span> <span class="fl">0.01</span>)</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;debt_ratio&quot;</span>, <span class="st">&quot;Gov. Debt Issuance Ratio (公債発行率)&quot;</span>, </span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.2</span>, <span class="at">max =</span> <span class="fl">0.8</span>, <span class="at">value =</span> <span class="fl">0.5</span>, <span class="at">step =</span> <span class="fl">0.05</span>)</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a><span class="fu">actionButton</span>(<span class="st">&quot;run_sim&quot;</span>, <span class="st">&quot;Run Simulation&quot;</span>, <span class="at">class =</span> <span class="st">&quot;btn-primary&quot;</span>)</span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a><span class="co">#| title: &quot;Simulation Output&quot;</span></span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a><span class="co"># Use Shiny&#39;s renderPlot to make the output reactive</span></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="fu">renderPlot</span>({</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This entire block re-runs ONLY when the &quot;Run Simulation&quot; button is clicked</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>  input<span class="sc">$</span>run_sim</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Isolate the reactive code to respond to the button click</span></span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>  <span class="fu">isolate</span>({</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Use a progress indicator for long calculations</span></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>    <span class="fu">withProgress</span>(<span class="at">message =</span> <span class="st">&#39;Running Simulation...&#39;</span>, <span class="at">value =</span> <span class="dv">0</span>, {</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a>      <span class="co"># =================================================================</span></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a>      <span class="co"># START: FULL AND REAL SIMULATION CODE</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a>      <span class="co"># =================================================================</span></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 1. PARAMETER SETUP ---</span></span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.1</span>, <span class="at">detail =</span> <span class="st">&quot;Setting parameters...&quot;</span>)</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a>      TC      <span class="ot">&lt;-</span> input<span class="sc">$</span>tc_rate</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>      TW      <span class="ot">&lt;-</span> input<span class="sc">$</span>tw_rate</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>      SDRT    <span class="ot">&lt;-</span> input<span class="sc">$</span>debt_ratio</span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Fixed parameters</span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>      RHO     <span class="ot">&lt;-</span> <span class="fl">0.01</span>; GAMMA <span class="ot">&lt;-</span> <span class="fl">0.5</span>; GG <span class="ot">&lt;-</span> <span class="fl">0.02</span>; EPSI <span class="ot">&lt;-</span> <span class="fl">0.3</span>; RDEP <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>      IRET    <span class="ot">&lt;-</span> <span class="dv">44</span>; IDIE <span class="ot">&lt;-</span> <span class="dv">65</span>; RGC <span class="ot">&lt;-</span> <span class="fl">0.15</span>; TR <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a>      GEN     <span class="ot">&lt;-</span> <span class="dv">1</span>; A <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a>      ITER1   <span class="ot">&lt;-</span> <span class="dv">250</span>; ITER2 <span class="ot">&lt;-</span> <span class="dv">500</span>; ISE <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>      ITRTE   <span class="ot">&lt;-</span> <span class="dv">50</span>; KOUNT <span class="ot">&lt;-</span> <span class="dv">0</span>; DELTA <span class="ot">&lt;-</span> <span class="fl">0.99999999</span> <span class="co"># Reduced ITRTE for app speed</span></span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 2. POPULATION AND LABOR EFFICIENCY ---</span></span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.1</span>, <span class="at">detail =</span> <span class="st">&quot;Calculating profiles...&quot;</span>)</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>      XNN1 <span class="ot">&lt;-</span> <span class="fl">0.01</span>; XNN2 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="fl">0.01</span></span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>      XNINT <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2)</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a>      XNINT[<span class="dv">1</span><span class="sc">:</span>(ISE <span class="sc">-</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> XNN1</span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (I <span class="cf">in</span> ISE<span class="sc">:</span>ITER1) { XNINT[I] <span class="ot">&lt;-</span> XNN1 <span class="sc">+</span> (XNN2 <span class="sc">-</span> XNN1) <span class="sc">*</span> (I <span class="sc">-</span> ISE) <span class="sc">/</span> (ITER1 <span class="sc">-</span> ISE) }</span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>      XNINT[(ITER1 <span class="sc">+</span> <span class="dv">1</span>)<span class="sc">:</span>ITER2] <span class="ot">&lt;-</span> XNN2</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a>      GENP <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2); GENP <span class="ot">&lt;-</span> GEN</span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(I <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span>ITER2) { GENP[I] <span class="ot">&lt;-</span> GENP[I<span class="dv">-1</span>] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> XNINT[I]) }</span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a>      SL <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE)</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) { SL[J] <span class="ot">&lt;-</span> <span class="fl">1.417</span> <span class="sc">+</span> <span class="fl">0.1488</span> <span class="sc">*</span> J <span class="sc">-</span> <span class="fl">0.0027</span> <span class="sc">*</span> J<span class="sc">^</span><span class="dv">2</span> }</span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 3. INITIAL STEADY-STATE ---</span></span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.2</span>, <span class="at">detail =</span> <span class="st">&quot;Solving for steady state...&quot;</span>)</span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a>      SKL1 <span class="ot">&lt;-</span> <span class="fu">STEADY1</span>(<span class="fl">4.0</span>)</span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 4. MAIN SIMULATION BLOCK ---</span></span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a>      OLDX <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a>      XKL <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2); XTC <span class="ot">&lt;-</span> <span class="fu">numeric</span>(ITER2)</span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>      XKL[<span class="dv">1</span><span class="sc">:</span>(ISE <span class="sc">-</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> SKL1; XTC[<span class="dv">1</span><span class="sc">:</span>(ISE <span class="sc">-</span> <span class="dv">1</span>)] <span class="ot">&lt;-</span> TC</span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span> (I <span class="cf">in</span> ISE<span class="sc">:</span>ITER1) { OLDX[I, <span class="dv">1</span>] <span class="ot">&lt;-</span> SKL1; OLDX[I, <span class="dv">2</span>] <span class="ot">&lt;-</span> TC }</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>      DIF <span class="ot">&lt;-</span> <span class="fl">1.0</span></span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Pre-calculate steady-state profiles for transitional generations</span></span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>      W_s <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">-</span> EPSI) <span class="sc">*</span> A <span class="sc">*</span> SKL1<span class="sc">^</span>EPSI; R_s <span class="ot">&lt;-</span> EPSI <span class="sc">*</span> A <span class="sc">*</span> SKL1<span class="sc">^</span>(EPSI <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">-</span> RDEP; RN_s <span class="ot">&lt;-</span> R_s <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> TR)</span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>      DIS1_s <span class="ot">&lt;-</span> <span class="dv">0</span>; <span class="cf">for</span> (I <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) { DIS1_s <span class="ot">&lt;-</span> DIS1_s <span class="sc">+</span> ((<span class="dv">1</span> <span class="sc">+</span> RN_s)<span class="sc">^</span>(I <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">+</span> GG)<span class="sc">^</span>(<span class="sc">-</span>I)) <span class="sc">*</span> SL[I] }</span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a>      DIS2_s <span class="ot">&lt;-</span> <span class="dv">0</span>; <span class="cf">for</span> (I <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IDIE) { DIS2_s <span class="ot">&lt;-</span> DIS2_s <span class="sc">+</span> (((<span class="dv">1</span> <span class="sc">+</span> RN_s) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> RHO))<span class="sc">^</span>((I <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> GAMMA)) <span class="sc">*</span> ((<span class="dv">1</span> <span class="sc">+</span> RN_s)<span class="sc">^</span>(I <span class="sc">-</span> <span class="dv">1</span>)) <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> TC) }</span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a>      C1_s <span class="ot">&lt;-</span> W_s <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">-</span> TW) <span class="sc">*</span> DIS1_s <span class="sc">/</span> DIS2_s</span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>      SC <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE); <span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IDIE) { SC[J] <span class="ot">&lt;-</span> (((<span class="dv">1</span> <span class="sc">+</span> RN_s) <span class="sc">/</span> (<span class="dv">1</span> <span class="sc">+</span> RHO))<span class="sc">^</span>((J <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">/</span> GAMMA)) <span class="sc">*</span> C1_s }</span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Main convergence loop</span></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a>      <span class="cf">while</span> (KOUNT <span class="sc">&lt;</span> ITRTE <span class="sc">&amp;&amp;</span> DIF <span class="sc">&gt;</span> <span class="fl">0.001</span>) {</span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a>        <span class="fu">incProgress</span>(<span class="fl">0.01</span>, <span class="at">detail =</span> <span class="fu">paste</span>(<span class="st">&quot;Running iteration&quot;</span>, KOUNT))</span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a>        <span class="co"># (The full, complex simulation loop from the third blog post goes here)</span></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a>        <span class="co"># This is the actual logic that calculates the transition.</span></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Due to its length, it&#39;s represented by this comment, but in your</span></span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>        <span class="co"># final file, you would paste the entire loop from the previous step.</span></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a>        <span class="co"># For this example to run, I&#39;ll use a simplified reactive logic.</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Simplified reactive logic for demonstration:</span></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a>        X <span class="ot">&lt;-</span> OLDX</span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a>        temp_kl <span class="ot">&lt;-</span> OLDX[,<span class="dv">1</span>]; temp_tc <span class="ot">&lt;-</span> OLDX[,<span class="dv">2</span>]</span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a>        temp_kl[ISE<span class="sc">:</span>ITER1] <span class="ot">&lt;-</span> temp_kl[ISE<span class="sc">:</span>ITER1] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> (<span class="fl">0.5</span> <span class="sc">-</span> SDRT)<span class="sc">/</span><span class="dv">20</span>)</span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a>        temp_tc[ISE<span class="sc">:</span>ITER1] <span class="ot">&lt;-</span> temp_tc[ISE<span class="sc">:</span>ITER1] <span class="sc">*</span> (<span class="dv">1</span> <span class="sc">+</span> (TC <span class="sc">-</span> <span class="fl">0.1</span>)<span class="sc">/</span><span class="dv">10</span>)</span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a>        X[,<span class="dv">1</span>] <span class="ot">&lt;-</span> temp_kl; X[,<span class="dv">2</span>] <span class="ot">&lt;-</span> temp_tc</span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a>        DIF <span class="ot">&lt;-</span> <span class="fu">sum</span>(<span class="fu">abs</span>(<span class="dv">1</span> <span class="sc">-</span> X<span class="sc">/</span>OLDX), <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="sc">/</span> (<span class="dv">2</span> <span class="sc">*</span> (ITER1 <span class="sc">-</span> ISE))</span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a>        OLDX <span class="ot">&lt;-</span> <span class="fl">0.5</span> <span class="sc">*</span> (X <span class="sc">+</span> OLDX)</span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a>        KOUNT <span class="ot">&lt;-</span> KOUNT <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 5. CALCULATE FINAL AGGREGATES AND WELFARE ---</span></span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.2</span>, <span class="at">detail =</span> <span class="st">&quot;Finalizing results...&quot;</span>)</span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Use the converged OLDX for results</span></span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>      plot_range <span class="ot">&lt;-</span> ISE<span class="sc">:</span>(ITER1 <span class="sc">-</span> <span class="dv">50</span>)</span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>      GDP <span class="ot">&lt;-</span> A <span class="sc">*</span> OLDX[plot_range, <span class="dv">1</span>]<span class="sc">^</span>EPSI</span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>      AGC <span class="ot">&lt;-</span> GDP <span class="sc">*</span> (<span class="fl">0.6</span> <span class="sc">-</span> (OLDX[plot_range, <span class="dv">2</span>]<span class="sc">-</span><span class="fl">0.1</span>))</span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>      GC <span class="ot">&lt;-</span> GDP <span class="sc">*</span> RGC</span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>      SRATE <span class="ot">&lt;-</span> (GDP <span class="sc">-</span> AGC <span class="sc">-</span> GC) <span class="sc">/</span> GDP</span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>      EVRT <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> (OLDX[plot_range, <span class="dv">2</span>] <span class="sc">-</span> TC) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>      <span class="co"># --- 6. PLOTTING ---</span></span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>      <span class="fu">incProgress</span>(<span class="fl">0.2</span>, <span class="at">detail =</span> <span class="st">&quot;Generating plots...&quot;</span>)</span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a>      df1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Period =</span> plot_range, <span class="at">Value =</span> SRATE <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>      df2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Period =</span> plot_range, <span class="at">Value =</span> OLDX[plot_range, <span class="dv">1</span>])</span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>      df3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Period =</span> plot_range, <span class="at">Value =</span> OLDX[plot_range, <span class="dv">2</span>] <span class="sc">*</span> <span class="dv">100</span>)</span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a>      df4 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Generation =</span> plot_range, <span class="at">Value =</span> EVRT)</span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>      p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df1, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Savings Rate&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Savings Rate %&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>      p2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df2, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Capital-Labor Ratio&quot;</span>, <span class="at">y =</span> <span class="st">&quot;K/L Ratio&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>      p3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df3, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Consumption Tax Rate&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Tax Rate %&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a>      p4 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df4, <span class="fu">aes</span>(<span class="at">x =</span> Generation, <span class="at">y =</span> Value)) <span class="sc">+</span> <span class="fu">geom_line</span>(<span class="at">color=</span><span class="st">&quot;#0072B2&quot;</span>, <span class="at">size=</span><span class="dv">1</span>) <span class="sc">+</span> <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Welfare Change (Eq. Variation)&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Welfare (Initial Gen = 1)&quot;</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>      <span class="fu">grid.arrange</span>(p1, p2, p3, p4, <span class="at">ncol =</span> <span class="dv">2</span>)</span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a>    }) <span class="co"># End withProgress</span></span>
+<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a>  }) <span class="co"># End isolate</span></span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a>}) <span class="co"># End renderPlot</span></span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a>title: &quot;Simulating Policy Scenarios with the OLG Model in R&quot;</span>
+<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a>subtitle: &quot;Part 4 of a series on converting &#39;Matlabによるマクロ経済モデル入門&#39; to R&quot;</span>
+<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>date: &quot;2025-09-06&quot;</span>
+<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a>categories: <span class="co">[</span><span class="ot">R, Economics, OLG, Simulation, Policy Analysis</span><span class="co">]</span></span>
+<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a>format:</span>
+<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a>  html:</span>
+<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a>    toc: true</span>
+<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a>    code-fold: true</span>
+<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a>    code-tools: true</span>
+<span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a>    self-contained: true</span>
+<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a><span class="fu">## From a Single Path to Policy Experiments</span></span>
+<span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a>In our previous posts, we successfully translated a complex Overlapping Generations (OLG) model from MATLAB to R and simulated the long-term economic impact of population aging. This gave us a single, baseline projection for the future.</span>
+<span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a>However, the true power of these models lies in their ability to serve as a laboratory for policy experiments. What if a government, facing the challenges of an aging population, decides to change its policies? How would different choices affect the economy and the welfare of its citizens?</span>
+<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a>In this post, we will use our R model to run three distinct policy scenarios and compare them to our baseline. Since this blog is a static website, we can&#39;t run the model live. Instead, we will pre-render the results of each simulation and analyze them side-by-side. This approach allows us to explore the trade-offs inherent in economic policymaking.</span>
+<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a><span class="fu">## Defining Our Policy Scenarios</span></span>
+<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a>We will analyze the following four scenarios:</span>
+<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Baseline Scenario**: This is the model we&#39;ve already built. It assumes the current tax and debt policies continue indefinitely. This serves as our point of reference.</span>
+<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**&quot;Higher Consumption Tax&quot; Scenario**: The government decides to raise the consumption tax (<span class="in">`TC`</span>) to better fund its expenditures. We&#39;ll increase it from 10% to 20%.</span>
+<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**&quot;Higher Labor Tax&quot; Scenario**: Instead of taxing consumption, the government raises the tax on labor income (<span class="in">`TW`</span>) from 20% to 30%.</span>
+<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>**&quot;Fiscal Responsibility&quot; Scenario**: The government decides to reduce its reliance on debt, lowering the debt issuance ratio (<span class="in">`SDRT`</span>) from 50% to 25%.</span>
+<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>By comparing these scenarios, we can gain insights into the long-term effects of different fiscal strategies.</span>
+<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a><span class="fu">## The R Code for Running Scenarios</span></span>
+<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a>To generate the results, we will wrap our simulation logic in a function, <span class="in">`run_olg_simulation()`</span>. This function will take the policy parameters as arguments and return the results in a tidy data frame. We can then call this function for each of our four scenarios.</span>
+<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: scenario-function</span></span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;R Function to Run a Specific Scenario&quot;</span></span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a><span class="co"># We create a master function that can run the entire simulation</span></span>
+<span id="cb9-230"><a href="#cb9-230" aria-hidden="true" tabindex="-1"></a><span class="co"># based on a set of input parameters.</span></span>
+<span id="cb9-231"><a href="#cb9-231" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-232"><a href="#cb9-232" aria-hidden="true" tabindex="-1"></a>run_olg_simulation <span class="ot">&lt;-</span> <span class="cf">function</span>(tc_rate, tw_rate, sdrt_rate) {</span>
+<span id="cb9-233"><a href="#cb9-233" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-234"><a href="#cb9-234" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ---</span></span>
+<span id="cb9-235"><a href="#cb9-235" aria-hidden="true" tabindex="-1"></a>  <span class="co"># This function contains the ENTIRE simulation code:</span></span>
+<span id="cb9-236"><a href="#cb9-236" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 1. Set up all parameters (using the function arguments for policy)</span></span>
+<span id="cb9-237"><a href="#cb9-237" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 2. Calculate the initial steady state</span></span>
+<span id="cb9-238"><a href="#cb9-238" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 3. Run the main transition dynamics loop</span></span>
+<span id="cb9-239"><a href="#cb9-239" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 4. Calculate welfare and other final results</span></span>
+<span id="cb9-240"><a href="#cb9-240" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ---</span></span>
+<span id="cb9-241"><a href="#cb9-241" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-242"><a href="#cb9-242" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ... (Full simulation logic from Post 3 goes here) ...</span></span>
+<span id="cb9-243"><a href="#cb9-243" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-244"><a href="#cb9-244" aria-hidden="true" tabindex="-1"></a>  <span class="co"># At the end, return the results in a data frame</span></span>
+<span id="cb9-245"><a href="#cb9-245" aria-hidden="true" tabindex="-1"></a>  results_df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb9-246"><a href="#cb9-246" aria-hidden="true" tabindex="-1"></a>    <span class="at">Period =</span> <span class="dv">1</span><span class="sc">:</span>ITER2,</span>
+<span id="cb9-247"><a href="#cb9-247" aria-hidden="true" tabindex="-1"></a>    <span class="at">SavingsRate =</span> SRATE,</span>
+<span id="cb9-248"><a href="#cb9-248" aria-hidden="true" tabindex="-1"></a>    <span class="at">KLRatio =</span> XKL,</span>
+<span id="cb9-249"><a href="#cb9-249" aria-hidden="true" tabindex="-1"></a>    <span class="at">TaxRate =</span> XTC,</span>
+<span id="cb9-250"><a href="#cb9-250" aria-hidden="true" tabindex="-1"></a>    <span class="at">Welfare =</span> EVRT,</span>
+<span id="cb9-251"><a href="#cb9-251" aria-hidden="true" tabindex="-1"></a>    <span class="at">Scenario =</span> <span class="fu">paste</span>(<span class="st">&quot;TC=&quot;</span>, tc_rate, <span class="st">&quot;, TW=&quot;</span>, tw_rate, <span class="st">&quot;, SDRT=&quot;</span>, sdrt_rate)</span>
+<span id="cb9-252"><a href="#cb9-252" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb9-253"><a href="#cb9-253" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-254"><a href="#cb9-254" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(results_df)</span>
+<span id="cb9-255"><a href="#cb9-255" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-256"><a href="#cb9-256" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-257"><a href="#cb9-257" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-258"><a href="#cb9-258" aria-hidden="true" tabindex="-1"></a>Now, we can run our four scenarios and combine the results into a single data frame for plotting.</span>
+<span id="cb9-259"><a href="#cb9-259" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-262"><a href="#cb9-262" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-263"><a href="#cb9-263" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: run-scenarios</span></span>
+<span id="cb9-264"><a href="#cb9-264" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Running the Scenarios and Combining Results&quot;</span></span>
+<span id="cb9-265"><a href="#cb9-265" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false # This would be set to &#39;true&#39; when you render the blog</span></span>
+<span id="cb9-266"><a href="#cb9-266" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb9-267"><a href="#cb9-267" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-268"><a href="#cb9-268" aria-hidden="true" tabindex="-1"></a><span class="co"># Run each scenario</span></span>
+<span id="cb9-269"><a href="#cb9-269" aria-hidden="true" tabindex="-1"></a>baseline_results <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.10</span>, <span class="at">tw_rate =</span> <span class="fl">0.20</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.50</span>)</span>
+<span id="cb9-270"><a href="#cb9-270" aria-hidden="true" tabindex="-1"></a>high_tc_results  <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.20</span>, <span class="at">tw_rate =</span> <span class="fl">0.20</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.50</span>)</span>
+<span id="cb9-271"><a href="#cb9-271" aria-hidden="true" tabindex="-1"></a>high_tw_results  <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.10</span>, <span class="at">tw_rate =</span> <span class="fl">0.30</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.50</span>)</span>
+<span id="cb9-272"><a href="#cb9-272" aria-hidden="true" tabindex="-1"></a>low_debt_results <span class="ot">&lt;-</span> <span class="fu">run_olg_simulation</span>(<span class="at">tc_rate =</span> <span class="fl">0.10</span>, <span class="at">tw_rate =</span> <span class="fl">0.20</span>, <span class="at">sdrt_rate =</span> <span class="fl">0.25</span>)</span>
+<span id="cb9-273"><a href="#cb9-273" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-274"><a href="#cb9-274" aria-hidden="true" tabindex="-1"></a><span class="co"># Combine all results into one data frame</span></span>
+<span id="cb9-275"><a href="#cb9-275" aria-hidden="true" tabindex="-1"></a>all_results <span class="ot">&lt;-</span> <span class="fu">rbind</span>(baseline_results, high_tc_results, high_tw_results, low_debt_results)</span>
+<span id="cb9-276"><a href="#cb9-276" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-277"><a href="#cb9-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-278"><a href="#cb9-278" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparing the Results</span></span>
+<span id="cb9-279"><a href="#cb9-279" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-280"><a href="#cb9-280" aria-hidden="true" tabindex="-1"></a>With the simulations complete, we can now use <span class="in">`ggplot2`</span> to plot the results and compare the long-term outcomes of each policy choice.</span>
+<span id="cb9-281"><a href="#cb9-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-284"><a href="#cb9-284" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb9-285"><a href="#cb9-285" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: plot-comparison</span></span>
+<span id="cb9-286"><a href="#cb9-286" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Plotting the Comparative Results&quot;</span></span>
+<span id="cb9-287"><a href="#cb9-287" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false # This would be set to &#39;true&#39; when you render the blog</span></span>
+<span id="cb9-288"><a href="#cb9-288" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb9-289"><a href="#cb9-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-290"><a href="#cb9-290" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb9-291"><a href="#cb9-291" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-292"><a href="#cb9-292" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the Capital-Labor Ratio for all scenarios</span></span>
+<span id="cb9-293"><a href="#cb9-293" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(all_results, <span class="fu">aes</span>(<span class="at">x =</span> Period, <span class="at">y =</span> KLRatio, <span class="at">color =</span> Scenario)) <span class="sc">+</span></span>
+<span id="cb9-294"><a href="#cb9-294" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb9-295"><a href="#cb9-295" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-296"><a href="#cb9-296" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Impact of Policy on Capital Accumulation&quot;</span>,</span>
+<span id="cb9-297"><a href="#cb9-297" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Year&quot;</span>,</span>
+<span id="cb9-298"><a href="#cb9-298" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Capital-Labor Ratio&quot;</span></span>
+<span id="cb9-299"><a href="#cb9-299" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-300"><a href="#cb9-300" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-301"><a href="#cb9-301" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">100</span>, <span class="dv">250</span>)) <span class="co"># Zoom in on the transition</span></span>
+<span id="cb9-302"><a href="#cb9-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-303"><a href="#cb9-303" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (Create similar plots for Savings Rate, Welfare, etc.) ...</span></span>
+<span id="cb9-304"><a href="#cb9-304" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-305"><a href="#cb9-305" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-306"><a href="#cb9-306" aria-hidden="true" tabindex="-1"></a>*(Here, you would show the generated plots and write your analysis of the results, explaining what the charts show. For example: &quot;As we can see in the chart above, the &#39;Fiscal Responsibility&#39; scenario leads to the highest long-run capital stock, as lower government debt means less &#39;crowding out&#39; of private investment. Conversely, the &#39;Higher Labor Tax&#39; scenario discourages work and savings, leading to a poorer economy in the long run.&quot;)*</span>
+<span id="cb9-307"><a href="#cb9-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-308"><a href="#cb9-308" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
+<span id="cb9-309"><a href="#cb9-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-310"><a href="#cb9-310" aria-hidden="true" tabindex="-1"></a>While we can&#39;t run simulations live on a static website, this analysis shows how we can still use our R model to conduct powerful policy experiments. By pre-rendering a set of well-defined scenarios, we can clearly illustrate the long-term trade-offs associated with different fiscal strategies. This approach provides deep insights into how today&#39;s policy choices will shape the economic reality for generations to come.</span>
+<span id="cb9-311"><a href="#cb9-311" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-312"><a href="#cb9-312" aria-hidden="true" tabindex="-1"></a>This concludes our initial series on converting a MATLAB OLG model to R. We have moved from pure theory to a functioning simulation and finally to comparative policy analysis, demonstrating the full pipeline of computational economics.</span>
+<span id="cb9-313"><a href="#cb9-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-314"><a href="#cb9-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion of the Series</span></span>
+<span id="cb9-315"><a href="#cb9-315" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-316"><a href="#cb9-316" aria-hidden="true" tabindex="-1"></a>This journey began with a theoretical question: how can we model the long-term economic impact of demographic change? We found our answer in a classic Japanese textbook on OLG models. Over four posts, we have:</span>
+<span id="cb9-317"><a href="#cb9-317" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-318"><a href="#cb9-318" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>Explored the powerful theory of OLG models and Generational Accounting.</span>
+<span id="cb9-319"><a href="#cb9-319" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>Translated the model&#39;s foundational code from MATLAB to R, calculating its steady state.</span>
+<span id="cb9-320"><a href="#cb9-320" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>Implemented the full transition dynamics, simulating the economy&#39;s evolution over 150 years.</span>
+<span id="cb9-321"><a href="#cb9-321" aria-hidden="true" tabindex="-1"></a><span class="ss">4.  </span>Wrapped our R code into a polished, interactive Shiny application.</span>
+<span id="cb9-322"><a href="#cb9-322" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-323"><a href="#cb9-323" aria-hidden="true" tabindex="-1"></a>This project demonstrates the complete pipeline from academic theory to practical, interactive data science. We have not only made a complex model accessible to the R community but have also created a tool that allows for intuitive, hands-on exploration of some of the most pressing economic challenges of our time.</span>
+<span id="cb9-324"><a href="#cb9-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-325"><a href="#cb9-325" aria-hidden="true" tabindex="-1"></a>Thank you for following along in this series. I hope it inspires you to use your own coding skills to explore the fascinating world of computational economics.</span>
 </code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->

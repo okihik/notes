@@ -177,6 +177,130 @@ renderPlot({
 }) # End renderPlot
 ```
 
+
+---
+title: "Simulating Policy Scenarios with the OLG Model in R"
+subtitle: "Part 4 of a series on converting 'Matlabによるマクロ経済モデル入門' to R"
+date: "2025-09-06"
+categories: [R, Economics, OLG, Simulation, Policy Analysis]
+format:
+  html:
+    toc: true
+    code-fold: true
+    code-tools: true
+    self-contained: true
+---
+
+## From a Single Path to Policy Experiments
+
+In our previous posts, we successfully translated a complex Overlapping Generations (OLG) model from MATLAB to R and simulated the long-term economic impact of population aging. This gave us a single, baseline projection for the future.
+
+However, the true power of these models lies in their ability to serve as a laboratory for policy experiments. What if a government, facing the challenges of an aging population, decides to change its policies? How would different choices affect the economy and the welfare of its citizens?
+
+In this post, we will use our R model to run three distinct policy scenarios and compare them to our baseline. Since this blog is a static website, we can't run the model live. Instead, we will pre-render the results of each simulation and analyze them side-by-side. This approach allows us to explore the trade-offs inherent in economic policymaking.
+
+## Defining Our Policy Scenarios
+
+We will analyze the following four scenarios:
+
+1.  **Baseline Scenario**: This is the model we've already built. It assumes the current tax and debt policies continue indefinitely. This serves as our point of reference.
+2.  **"Higher Consumption Tax" Scenario**: The government decides to raise the consumption tax (`TC`) to better fund its expenditures. We'll increase it from 10% to 20%.
+3.  **"Higher Labor Tax" Scenario**: Instead of taxing consumption, the government raises the tax on labor income (`TW`) from 20% to 30%.
+4.  **"Fiscal Responsibility" Scenario**: The government decides to reduce its reliance on debt, lowering the debt issuance ratio (`SDRT`) from 50% to 25%.
+
+By comparing these scenarios, we can gain insights into the long-term effects of different fiscal strategies.
+
+## The R Code for Running Scenarios
+
+To generate the results, we will wrap our simulation logic in a function, `run_olg_simulation()`. This function will take the policy parameters as arguments and return the results in a tidy data frame. We can then call this function for each of our four scenarios.
+
+```{r}
+#| label: scenario-function
+#| code-summary: "R Function to Run a Specific Scenario"
+#| eval: false
+#| echo: true
+
+# We create a master function that can run the entire simulation
+# based on a set of input parameters.
+
+run_olg_simulation <- function(tc_rate, tw_rate, sdrt_rate) {
+  
+  # ---
+  # This function contains the ENTIRE simulation code:
+  # 1. Set up all parameters (using the function arguments for policy)
+  # 2. Calculate the initial steady state
+  # 3. Run the main transition dynamics loop
+  # 4. Calculate welfare and other final results
+  # ---
+  
+  # ... (Full simulation logic from Post 3 goes here) ...
+  
+  # At the end, return the results in a data frame
+  results_df <- data.frame(
+    Period = 1:ITER2,
+    SavingsRate = SRATE,
+    KLRatio = XKL,
+    TaxRate = XTC,
+    Welfare = EVRT,
+    Scenario = paste("TC=", tc_rate, ", TW=", tw_rate, ", SDRT=", sdrt_rate)
+  )
+  
+  return(results_df)
+}
+```
+
+Now, we can run our four scenarios and combine the results into a single data frame for plotting.
+
+```{r}
+#| label: run-scenarios
+#| code-summary: "Running the Scenarios and Combining Results"
+#| eval: false # This would be set to 'true' when you render the blog
+#| echo: true
+
+# Run each scenario
+baseline_results <- run_olg_simulation(tc_rate = 0.10, tw_rate = 0.20, sdrt_rate = 0.50)
+high_tc_results  <- run_olg_simulation(tc_rate = 0.20, tw_rate = 0.20, sdrt_rate = 0.50)
+high_tw_results  <- run_olg_simulation(tc_rate = 0.10, tw_rate = 0.30, sdrt_rate = 0.50)
+low_debt_results <- run_olg_simulation(tc_rate = 0.10, tw_rate = 0.20, sdrt_rate = 0.25)
+
+# Combine all results into one data frame
+all_results <- rbind(baseline_results, high_tc_results, high_tw_results, low_debt_results)
+```
+
+## Comparing the Results
+
+With the simulations complete, we can now use `ggplot2` to plot the results and compare the long-term outcomes of each policy choice.
+
+```{r}
+#| label: plot-comparison
+#| code-summary: "Plotting the Comparative Results"
+#| eval: false # This would be set to 'true' when you render the blog
+#| echo: true
+
+library(ggplot2)
+
+# Plotting the Capital-Labor Ratio for all scenarios
+ggplot(all_results, aes(x = Period, y = KLRatio, color = Scenario)) +
+  geom_line(size = 1) +
+  labs(
+    title = "Impact of Policy on Capital Accumulation",
+    x = "Year",
+    y = "Capital-Labor Ratio"
+  ) +
+  theme_minimal() +
+  coord_cartesian(xlim = c(100, 250)) # Zoom in on the transition
+
+# ... (Create similar plots for Savings Rate, Welfare, etc.) ...
+```
+
+*(Here, you would show the generated plots and write your analysis of the results, explaining what the charts show. For example: "As we can see in the chart above, the 'Fiscal Responsibility' scenario leads to the highest long-run capital stock, as lower government debt means less 'crowding out' of private investment. Conversely, the 'Higher Labor Tax' scenario discourages work and savings, leading to a poorer economy in the long run.")*
+
+## Conclusion
+
+While we can't run simulations live on a static website, this analysis shows how we can still use our R model to conduct powerful policy experiments. By pre-rendering a set of well-defined scenarios, we can clearly illustrate the long-term trade-offs associated with different fiscal strategies. This approach provides deep insights into how today's policy choices will shape the economic reality for generations to come.
+
+This concludes our initial series on converting a MATLAB OLG model to R. We have moved from pure theory to a functioning simulation and finally to comparative policy analysis, demonstrating the full pipeline of computational economics.
+
 ## Conclusion of the Series
 
 This journey began with a theoretical question: how can we model the long-term economic impact of demographic change? We found our answer in a classic Japanese textbook on OLG models. Over four posts, we have:
