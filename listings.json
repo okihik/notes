@@ -2,26 +2,27 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/Stat/gamma.html",
       "/posts/generationalAccountingModel/gam4.html",
       "/posts/generationalAccountingModel/gam3.html",
       "/posts/generationalAccountingModel/gam2.html",
       "/posts/generationalAccountingModel/gam1.html",
       "/posts/generationalAccountingModel/gam0.html",
       "/posts/DynamicInventoryManagement/div6_zaikoshisan.html",
-      "/posts/DynamicInventoryManagement/div4_makeToStock.html",
       "/posts/DynamicInventoryManagement/div5_makeToOrder.html",
+      "/posts/DynamicInventoryManagement/div4_makeToStock.html",
       "/posts/DynamicInventoryManagement/div3_prod.html",
+      "/posts/UNBC thesis in latex/thesis3.html",
       "/posts/DynamicInventoryManagement/div1_intr.html",
       "/posts/DynamicInventoryManagement/div2_inventory.html",
-      "/posts/UNBC thesis in latex/thesis3.html",
       "/posts/Black holes 250824.html",
       "/posts/UNBC thesis in latex/thesis2.html",
       "/posts/UNBC thesis in latex/thesis1.html",
       "/posts/UNBC thesis in latex/thesis0.html",
       "/posts/academic reporting in tex 2/index.html",
       "/posts/academic reporting in tex/Academic Report1.html",
-      "/posts/welcome/index.html",
-      "/posts/create a Quarto blog/index.html"
+      "/posts/create a Quarto blog/index.html",
+      "/posts/welcome/index.html"
     ]
   }
 ]
