@@ -29,8 +29,8 @@ The algorithm works like this:
 2.  **Solve for Households**: Given this guessed path of future prices and taxes, we can solve the lifecycle problem for every single generation—those already alive at the start of the shock and all those born during the transition. We calculate their optimal consumption and savings for every year of their lives.
 3.  **Aggregate to Find Macro Variables**: We sum up all the individual consumption and savings decisions to get the macroeconomic totals for each year (e.g., total private assets, total consumption).
 4.  **Calculate New Paths**:
-    *   From the aggregate savings, we calculate what the **new path of the capital-labor ratio** should be.
-    *   From the government's budget, we calculate what the **new path of the consumption tax rate** must be to keep the budget balanced each year.
+    -   From the aggregate savings, we calculate what the **new path of the capital-labor ratio** should be.
+    -   From the government's budget, we calculate what the **new path of the consumption tax rate** must be to keep the budget balanced each year.
 5.  **Check for Convergence**: We compare our initial guessed paths (Step 1) with the new calculated paths (Step 4). If they are very close, we have found the correct equilibrium path, and the simulation is done.
 6.  **Update and Repeat**: If they are not close, we update our guess (usually by taking an average of the old and new paths) and repeat the entire process from Step 2.
 
@@ -78,7 +78,6 @@ ITER2   <- 500     # Total simulation years
 ITRTE   <- 200000  # Max iterations for convergence
 DELTA   <- 0.99999999 # Convergence precision
 ```
-
 
 ```{r}
 #| label: main-simulation-loop

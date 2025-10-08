@@ -23,8 +23,8 @@ In this post, we will upgrade our R model by incorporating a **pay-as-you-go pub
 
 The model we'll build is a "pay-as-you-go" (PAYG) system, which is how social security works in most countries, including Japan. The logic is simple:
 
-*   The current **working generation** pays contributions (a tax on their wages).
-*   These contributions are **not saved or invested**. Instead, they are immediately transferred and paid out as benefits to the current **retired generation**.
+-   The current **working generation** pays contributions (a tax on their wages).
+-   These contributions are **not saved or invested**. Instead, they are immediately transferred and paid out as benefits to the current **retired generation**.
 
 This creates a direct link between the generations and makes the system highly sensitive to demographics. When the population is young (many workers per retiree), the system is easy to sustain with low contribution rates. However, as the population ages (fewer workers per retiree), the financial pressure mounts, requiring either higher contribution rates for the young, lower benefits for the old, or some combination of both.
 
@@ -121,8 +121,8 @@ sliderInput("retire_age", "Retirement Age (退職年齢)",
 
 With these controls, our Shiny app can now answer much more interesting questions:
 
-*   **What if we lower the generosity of pensions?** We can move the `replacement_rate` slider down and watch how it affects the national savings rate and long-term GDP.
-*   **What if we increase the retirement age?** We can move the `retire_age` slider up. This increases the number of contributors and reduces the number of beneficiaries, showing how it can alleviate fiscal pressure.
+-   **What if we lower the generosity of pensions?** We can move the `replacement_rate` slider down and watch how it affects the national savings rate and long-term GDP.
+-   **What if we increase the retirement age?** We can move the `retire_age` slider up. This increases the number of contributors and reduces the number of beneficiaries, showing how it can alleviate fiscal pressure.
 
 The output panel of the app would be updated to include new plots, such as the evolution of the **pension contribution rate** over time.
 

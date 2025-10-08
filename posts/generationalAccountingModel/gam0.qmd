@@ -31,9 +31,9 @@ By modeling the economy as a collection of these lifecycle agents, we can analyz
 
 This structure makes OLG models uniquely suited to study issues where timing and age are critical, such as:
 
-*   **Pension System Reform:** How does changing from a pay-as-you-go to a funded pension system affect different cohorts?
-*   **Government Debt:** Who ultimately bears the burden of public debt—current taxpayers or future ones?
-*   **Demographic Change:** What happens to national savings and capital accumulation when the proportion of retirees to workers increases?
+-   **Pension System Reform:** How does changing from a pay-as-you-go to a funded pension system affect different cohorts?
+-   **Government Debt:** Who ultimately bears the burden of public debt—current taxpayers or future ones?
+-   **Demographic Change:** What happens to national savings and capital accumulation when the proportion of retirees to workers increases?
 
 ## Generational Accounting: Who Pays the Bill?
 
@@ -41,8 +41,8 @@ The OLG framework provides the engine for a powerful analytical concept known as
 
 A **Generational Account** is an estimate of the present value of all future taxes a person from a specific generation will pay, minus the present value of all the government benefits (like social security and healthcare) they will receive.
 
-*   If the net amount is **positive**, that generation is a net contributor to the government.
-*   If the net amount is **negative**, that generation is a net beneficiary.
+-   If the net amount is **positive**, that generation is a net contributor to the government.
+-   If the net amount is **negative**, that generation is a net beneficiary.
 
 By comparing these accounts across generations, we can quantify the fairness of fiscal policy. For instance, if policies are enacted that benefit today's older generations (e.g., maintaining high pension benefits without raising taxes), Generational Accounting will show that the burden is shifted onto younger and future generations, who will face higher taxes or lower benefits over their lifetimes.
 
@@ -54,10 +54,10 @@ The textbook by Oguro and Shimasawa provides a comprehensive guide to building a
 
 In the upcoming posts, we will dive into the code, translating the MATLAB scripts chapter by chapter. We will cover:
 
-*   Setting up the model parameters in R.
-*   Calculating the economy's long-run "steady state."
-*   Simulating the transition path from one equilibrium to another.
-*   Visualizing the results for key economic variables.
+-   Setting up the model parameters in R.
+-   Calculating the economy's long-run "steady state."
+-   Simulating the transition path from one equilibrium to another.
+-   Visualizing the results for key economic variables.
 
 Ultimately, we will build an interactive **Shiny application** to explore policy scenarios in real-time.
 
