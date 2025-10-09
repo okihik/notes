@@ -1,7 +1,6 @@
 ---
 title: "Modeling Inequality: Adding Heterogeneous Agents to the OLG Model"
 subtitle: "Part 6 of a series on converting 'Matlabによるマクロ経済モデル入門' to R"
-author: "Your Name"
 date: "2025-09-08"
 categories: [R, Economics, OLG, Inequality, Shiny]
 format:
