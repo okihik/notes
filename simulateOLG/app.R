@@ -52,29 +52,41 @@ ui <- fluidPage(
       h4("Model Parameters"),
       
       # Model parameters from OLG.m
-      sliderInput("RHO", "Time Preference Rate (RHO):", 0.01, min = 0, max = 1, step = 0.001),
-      sliderInput("GAMMA", "Inverse of Intertemporal Elasticity of Substitution (GAMMA):", 0.5, min = 0.1, max = 2, step = 0.05),
-      sliderInput("IRET", "Retirement Age (IRET):", 44, min = 1, max = 65, step = 1),
-      sliderInput("IDIE", "Lifespan (IDIE):", 65, min = 45, max = 80, step = 1),
-      sliderInput("GG", "Technological Progress Rate (GG):", 0.02, min = 0, max = 0.1, step = 0.001),
-      sliderInput("EPSI", "Capital Share (EPSI):", 0.3, min = 0.1, max = 0.9, step = 0.01),
-      sliderInput("RDEP", "Depreciation Rate (RDEP):", 0.05, min = 0, max = 0.2, step = 0.01),
-      sliderInput("TW", "Wage Tax Rate (TW):", 0.20, min = 0, max = 1, step = 0.01),
-      sliderInput("TR", "Capital Tax Rate (TR):", 0.05, min = 0, max = 1, step = 0.01),
-      sliderInput("TC", "Initial Consumption Tax Rate (TC):", 0.10, min = 0, max = 1, step = 0.01),
-      sliderInput("RGC", "Government Consumption to GDP Ratio (RGC):", 0.15, min = 0, max = 1, step = 0.01),
-      sliderInput("SDRT", "Government Debt Issuance Rate (SDRT):", 0.5, min = 0, max = 1, step = 0.01),
+      sliderInput("RHO", "Time Preference Rate (RHO):", 
+                  0.01, min = 0, max = 1, step = 0.001),
+      sliderInput("GAMMA", "Inverse of Intertemporal Elasticity of Substitution (GAMMA):", 
+                  0.5, min = 0.1, max = 2, step = 0.05),
+      sliderInput("IRET", "Retirement Age (IRET):", 
+                  44, min = 1, max = 65, step = 1),
+      sliderInput("IDIE", "Lifespan (IDIE):", 
+                  65, min = 45, max = 80, step = 1),
+      sliderInput("GG", "Technological Progress Rate (GG):", 
+                  0.02, min = 0, max = 0.1, step = 0.001),
+      sliderInput("EPSI", "Capital Share (EPSI):", 
+                  0.3, min = 0.1, max = 0.9, step = 0.01),
+      sliderInput("RDEP", "Depreciation Rate (RDEP):", 
+                  0.05, min = 0, max = 0.2, step = 0.01),
+      sliderInput("TW", "Wage Tax Rate (TW):", 
+                  0.20, min = 0, max = 1, step = 0.01),
+      sliderInput("TR", "Capital Tax Rate (TR):", 
+                  0.05, min = 0, max = 1, step = 0.01),
+      sliderInput("TC", "Initial Consumption Tax Rate (TC):", 
+                  0.10, min = 0, max = 1, step = 0.01),
+      sliderInput("RGC", "Government Consumption to GDP Ratio (RGC):", 
+                  0.15, min = 0, max = 1, step = 0.01),
+      sliderInput("SDRT", "Government Debt Issuance Rate (SDRT):", 
+                  0.5, min = 0, max = 1, step = 0.01),
       
       # Simulation parameters
       h4("Simulation Controls"), # Added a header for clarity
       sliderInput("ITER1", "Transition End Year (ITER1):", 250, min = 100, max = 500, step = 10),
       sliderInput("ITER2", "Simulation End Year (ITER2):", 500, min = 200, max = 1000, step = 10),
-      sliderInput("ISE", "Transition Start Year (ISE):", 100, min = 1, max = 200, step = 10),
+      sliderInput("ISE",   "Transition Start Year (ISE):", 100, min = 1, max = 200, step = 10),
       
       # Population growth path parameters
       h4("Demographic Shock"), # Added a header for clarity
       sliderInput("XNN1", "Initial Population Growth Rate (XNN1):", 0.01, min = -0.05, max = 0.05, step = 0.001),
-      sliderInput("XNN2", "Final Population Growth Rate (XNN2):", -0.01, min = -0.05, max = 0.05, step = 0.001),
+      sliderInput("XNN2", "Final Population Growth Rate (XNN2):",  -0.01, min = -0.05, max = 0.05, step = 0.001),
       
       actionButton("run_sim", "Run Simulation", class = "btn-primary")
     ),
