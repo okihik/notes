@@ -1,1 +1,1 @@
-Sitemap: https://okihik.github.io/versatile-note.github.io/sitemap.xml
+Sitemap: https://okihik.github.io/notes/sitemap.xml
