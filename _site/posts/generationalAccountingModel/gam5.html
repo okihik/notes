@@ -6,9 +6,10 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-09-07">
+<meta name="author" content="Your Name">
+<meta name="dcterms.date" content="2025-09-08">
 
-<title>Upgrading the OLG Model: Adding a Public Pension System – Himagineer</title>
+<title>Modeling Inequality: Adding Heterogeneous Agents to the OLG Model – Himagineer</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -3912,13 +3913,13 @@ vertical-align: -.125em;
 <header id="title-block-header" class="quarto-title-block default page-columns page-full">
   <div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
-      <div class="quarto-title-block"><div><h1 class="title">Upgrading the OLG Model: Adding a Public Pension System</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
-            <p class="subtitle lead">Part 5 of a series on converting ‘Matlabによるマクロ経済モデル入門’ to R</p>
+      <div class="quarto-title-block"><div><h1 class="title">Modeling Inequality: Adding Heterogeneous Agents to the OLG Model</h1><button type="button" class="btn code-tools-button dropdown-toggle" id="quarto-code-tools-menu" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi"></i> Code</button><ul class="dropdown-menu dropdown-menu-end" aria-labelelledby="quarto-code-tools-menu"><li><a id="quarto-show-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Show All Code</a></li><li><a id="quarto-hide-all-code" class="dropdown-item" href="javascript:void(0)" role="button">Hide All Code</a></li><li><hr class="dropdown-divider"></li><li><a id="quarto-view-source" class="dropdown-item" href="javascript:void(0)" role="button">View Source</a></li></ul></div></div>
+            <p class="subtitle lead">Part 6 of a series on converting ‘Matlabによるマクロ経済モデル入門’ to R</p>
                                 <div class="quarto-categories">
                 <div class="quarto-category">R</div>
                 <div class="quarto-category">Economics</div>
                 <div class="quarto-category">OLG</div>
-                <div class="quarto-category">Social Security</div>
+                <div class="quarto-category">Inequality</div>
                 <div class="quarto-category">Shiny</div>
               </div>
                   </div>
@@ -3927,11 +3928,17 @@ vertical-align: -.125em;
   
   <div class="quarto-title-meta">
 
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Your Name </p>
+            </div>
+    </div>
       
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">September 7, 2025</p>
+        <p class="date">September 8, 2025</p>
       </div>
     </div>
     
@@ -3947,15 +3954,14 @@ vertical-align: -.125em;
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction-modeling-social-security" id="toc-introduction-modeling-social-security" class="nav-link active" data-scroll-target="#introduction-modeling-social-security">Introduction: Modeling Social Security</a></li>
-  <li><a href="#the-economics-of-a-pay-as-you-go-pension-system" id="toc-the-economics-of-a-pay-as-you-go-pension-system" class="nav-link" data-scroll-target="#the-economics-of-a-pay-as-you-go-pension-system">The Economics of a Pay-As-You-Go Pension System</a></li>
-  <li><a href="#step-1-modifying-the-r-code" id="toc-step-1-modifying-the-r-code" class="nav-link" data-scroll-target="#step-1-modifying-the-r-code">Step 1: Modifying the R Code</a>
+  <li><a href="#introduction-beyond-the-average-household" id="toc-introduction-beyond-the-average-household" class="nav-link active" data-scroll-target="#introduction-beyond-the-average-household">Introduction: Beyond the “Average” Household</a></li>
+  <li><a href="#the-why-and-how-of-heterogeneity" id="toc-the-why-and-how-of-heterogeneity" class="nav-link" data-scroll-target="#the-why-and-how-of-heterogeneity">The “Why” and “How” of Heterogeneity</a></li>
+  <li><a href="#step-1-modifying-the-r-code-for-multiple-household-types" id="toc-step-1-modifying-the-r-code-for-multiple-household-types" class="nav-link" data-scroll-target="#step-1-modifying-the-r-code-for-multiple-household-types">Step 1: Modifying the R Code for Multiple Household Types</a></li>
+  <li><a href="#step-2-upgrading-the-shiny-app-to-visualize-inequality" id="toc-step-2-upgrading-the-shiny-app-to-visualize-inequality" class="nav-link" data-scroll-target="#step-2-upgrading-the-shiny-app-to-visualize-inequality">Step 2: Upgrading the Shiny App to Visualize Inequality</a>
   <ul class="collapse">
-  <li><a href="#updating-the-household-lifecycle" id="toc-updating-the-household-lifecycle" class="nav-link" data-scroll-target="#updating-the-household-lifecycle">Updating the Household Lifecycle</a></li>
-  <li><a href="#creating-the-pension-finance-module" id="toc-creating-the-pension-finance-module" class="nav-link" data-scroll-target="#creating-the-pension-finance-module">Creating the Pension Finance Module</a></li>
+  <li><a href="#new-inequality-analysis-tab-in-shiny" id="toc-new-inequality-analysis-tab-in-shiny" class="nav-link" data-scroll-target="#new-inequality-analysis-tab-in-shiny">New “Inequality Analysis” Tab in Shiny</a></li>
   </ul></li>
-  <li><a href="#step-2-upgrading-the-shiny-application" id="toc-step-2-upgrading-the-shiny-application" class="nav-link" data-scroll-target="#step-2-upgrading-the-shiny-application">Step 2: Upgrading the Shiny Application</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#conclusion-a-more-nuanced-view" id="toc-conclusion-a-more-nuanced-view" class="nav-link" data-scroll-target="#conclusion-a-more-nuanced-view">Conclusion: A More Nuanced View</a></li>
   </ul>
 </nav>
     </div>
@@ -3966,113 +3972,134 @@ vertical-align: -.125em;
 
 
 
-<section id="introduction-modeling-social-security" class="level2">
-<h2 class="anchored" data-anchor-id="introduction-modeling-social-security">Introduction: Modeling Social Security</h2>
-<p>In our <a href="https://okihik.github.io/versatile-note.github.io/posts/generationalAccountingModel/gam3.html">previous posts</a>, we successfully built a complete, interactive Overlapping Generations (OLG) model in R. While powerful, our model was missing a feature that is central to every modern economy: a <strong>public pension system</strong>. For most retirees, social security is the single most important source of income, and for workers, it’s one of their largest mandatory expenses.</p>
-<p>No realistic analysis of long-term fiscal policy or demographic change can be complete without including it. The way a pension system is designed has profound effects on household savings decisions, national capital accumulation, and, most importantly, the distribution of resources between generations.</p>
-<p>In this post, we will upgrade our R model by incorporating a <strong>pay-as-you-go public pension system</strong>, following the <code>OLG2.m</code> model from the textbook. This will allow us to analyze the effects of pension policy on the economy. We will then add interactive controls for these new policies to our Shiny application, creating an even more powerful tool for analysis.</p>
+<section id="introduction-beyond-the-average-household" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-beyond-the-average-household">Introduction: Beyond the “Average” Household</h2>
+<p>In our series so far, we’ve built a powerful model of the economy. However, it has a significant simplification: it assumes everyone within a generation is identical. The “representative agent” in our model is an average of everyone, but as the saying goes, if you have one foot in a bucket of ice and the other in a bucket of hot coals, on average you’re comfortable—but the average is misleading.</p>
+<p>The real world is characterized by <strong>heterogeneity</strong>. People have different skills, earn different wages, and accumulate different amounts of wealth. These differences are not just details; they are central to understanding how economic policies truly affect society. A policy that is beneficial on average might still create significant winners and losers.</p>
+<p>In this post, we will make a major upgrade to our OLG model by introducing <strong>heterogeneous agents</strong>. We will move from a model with one type of household to one with multiple, distinct income groups. This will allow us to analyze the distributional consequences of economic policies and explore the dynamics of inequality.</p>
 </section>
-<section id="the-economics-of-a-pay-as-you-go-pension-system" class="level2">
-<h2 class="anchored" data-anchor-id="the-economics-of-a-pay-as-you-go-pension-system">The Economics of a Pay-As-You-Go Pension System</h2>
-<p>The model we’ll build is a “pay-as-you-go” (PAYG) system, which is how social security works in most countries, including Japan. The logic is simple:</p>
-<ul>
-<li>The current <strong>working generation</strong> pays contributions (a tax on their wages).</li>
-<li>These contributions are <strong>not saved or invested</strong>. Instead, they are immediately transferred and paid out as benefits to the current <strong>retired generation</strong>.</li>
-</ul>
-<p>This creates a direct link between the generations and makes the system highly sensitive to demographics. When the population is young (many workers per retiree), the system is easy to sustain with low contribution rates. However, as the population ages (fewer workers per retiree), the financial pressure mounts, requiring either higher contribution rates for the young, lower benefits for the old, or some combination of both.</p>
-<p>From a modeling perspective, a PAYG pension system acts as a substitute for private savings. Because individuals expect to receive pension benefits in retirement, they have less incentive to save on their own. This “crowding out” of private savings is a key mechanism through which pension systems can affect a country’s long-run capital stock and economic growth.</p>
-</section>
-<section id="step-1-modifying-the-r-code" class="level2">
-<h2 class="anchored" data-anchor-id="step-1-modifying-the-r-code">Step 1: Modifying the R Code</h2>
-<p>To add the pension system, we need to make two main changes to our R code:</p>
+<section id="the-why-and-how-of-heterogeneity" class="level2">
+<h2 class="anchored" data-anchor-id="the-why-and-how-of-heterogeneity">The “Why” and “How” of Heterogeneity</h2>
+<p>The textbook we’ve been following, “Matlabによるマクロ経済モデル入門,” introduces this concept in Chapter 7. The core idea is to segment the population into different groups based on their lifetime earning potential.</p>
+<p><strong>Why is this important?</strong></p>
 <ol type="1">
-<li><strong>Update the Household’s Budget:</strong> The lifetime budget constraint of each household must now include pension contributions (a cost during working years) and pension benefits (an income during retirement).</li>
-<li><strong>Add a Pension System Module:</strong> We need a new block of code that manages the pension system’s finances, ensuring that total benefits paid out equal total contributions collected in each period.</li>
+<li><strong>Analyzing Inequality:</strong> It’s impossible to talk about inequality with a model that assumes everyone is the same. By including different income groups, we can track metrics like the <strong>Gini coefficient</strong> or the wealth gap between the rich and the poor.</li>
+<li><strong>More Realistic Macroeconomics:</strong> Different income groups behave differently. High-income households, for example, typically save a larger fraction of their income. This means that the overall national savings rate depends not just on the average income, but on the <em>distribution</em> of that income.</li>
+<li><strong>Distributional Effects of Policy:</strong> A flat consumption tax is felt more heavily by low-income households who consume a larger share of their income. A change in pension benefits might be a minor issue for a wealthy retiree but a critical one for a poor retiree. Our new model can capture these effects.</li>
 </ol>
-<section id="updating-the-household-lifecycle" class="level3">
-<h3 class="anchored" data-anchor-id="updating-the-household-lifecycle">Updating the Household Lifecycle</h3>
-<p>The core change happens when we solve for the household’s consumption and savings path. Their lifetime resources are now affected by pension policy.</p>
+<p><strong>How do we implement it?</strong></p>
+<p>The key is to create different <strong>labor efficiency profiles (<code>SL</code>)</strong> for each group. A “high-skill” group will have a higher efficiency profile, meaning they earn a higher wage at every age, while a “low-skill” group will have a lower profile. We then simulate the lifecycle decisions for <em>each group separately</em> before aggregating them to get the macroeconomic totals.</p>
+</section>
+<section id="step-1-modifying-the-r-code-for-multiple-household-types" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-modifying-the-r-code-for-multiple-household-types">Step 1: Modifying the R Code for Multiple Household Types</h2>
+<p>The biggest change to our R code is that we now need to loop through our different household types. Instead of calculating one path for consumption and assets, we need to calculate a set of paths for each group.</p>
+<p>Let’s say we define two groups: <code>group_1</code> (low-income) and <code>group_2</code> (high-income).</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Conceptual R Code for Household with Pensions</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside the main simulation loop, when calculating a generation&#39;s resources...</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Lifetime resources are now reduced by lifetime pension contributions</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># and increased by lifetime pension benefits.</span></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate lifetime resources for generation I</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) { <span class="co"># Working years</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Subtract pension contributions (PP) from wage income</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>  PDVW <span class="ot">&lt;-</span> PDVW <span class="sc">+</span> (W[I<span class="sc">+</span>J<span class="dv">-1</span>]<span class="sc">*</span>SL[J]<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>TW) <span class="sc">-</span> PP[I,J]) <span class="sc">*</span> RR[J] </span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> (IRET<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>IDIE) { <span class="co"># Retirement years</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add pension benefits (PR) to retirement income</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  PDVW <span class="ot">&lt;-</span> PDVW <span class="sc">+</span> PR[I,J] <span class="sc">*</span> RR[J]</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># The rest of the household&#39;s problem (choosing consumption) proceeds as before,</span></span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># but with this new, adjusted level of lifetime wealth.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<summary>Conceptual R Code for Heterogeneous Agents</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Define different labor efficiency profiles for each group ---</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>SL_group1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>SL_group2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) {</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Low-income profile (e.g., lower intercept and slope)</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  SL_group1[J] <span class="ot">&lt;-</span> <span class="fl">1.0</span> <span class="sc">+</span> <span class="fl">0.10</span> <span class="sc">*</span> J <span class="sc">-</span> <span class="fl">0.0020</span> <span class="sc">*</span> J<span class="sc">^</span><span class="dv">2</span> </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># High-income profile (e.g., higher intercept and slope)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  SL_group2[J] <span class="ot">&lt;-</span> <span class="fl">1.8</span> <span class="sc">+</span> <span class="fl">0.15</span> <span class="sc">*</span> J <span class="sc">-</span> <span class="fl">0.0025</span> <span class="sc">*</span> J<span class="sc">^</span><span class="dv">2</span> </span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- The main simulation loop now needs an outer loop for groups ---</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize matrices to hold results for each group</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>C_group1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>AA_group1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>C_group2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>AA_group2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the household problem for each group</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co"># (This would be inside the main `while` convergence loop)</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for Group 1 using SL_group1 -&gt; get C_group1, AA_group1</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for Group 2 using SL_group2 -&gt; get C_group2, AA_group2</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Macroeconomic aggregation now sums across groups ---</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s say Group 1 is 60% of the population and Group 2 is 40%</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>pop_share_g1 <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>pop_share_g2 <span class="ot">&lt;-</span> <span class="fl">0.4</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate Consumption (AGC)</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>AGC[I] <span class="ot">&lt;-</span> (<span class="fu">sum</span>(C_group1[...]) <span class="sc">*</span> pop_share_g1) <span class="sc">+</span> (<span class="fu">sum</span>(C_group2[...]) <span class="sc">*</span> pop_share_g2)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate Assets (PASET)</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>PASET[I] <span class="ot">&lt;-</span> (<span class="fu">sum</span>(AA_group1[...]) <span class="sc">*</span> pop_share_g1) <span class="sc">+</span> (<span class="fu">sum</span>(AA_group2[...]) <span class="sc">*</span> pop_share_g2)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a><span class="co"># ... and so on for other aggregate variables.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
-<section id="creating-the-pension-finance-module" class="level3">
-<h3 class="anchored" data-anchor-id="creating-the-pension-finance-module">Creating the Pension Finance Module</h3>
-<p>We also need to add logic that calculates the total contributions (<code>AGPP</code>) and benefits (<code>AGPR</code>) for the entire economy each year. In a simple PAYG system, these must be equal.</p>
+<section id="step-2-upgrading-the-shiny-app-to-visualize-inequality" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-upgrading-the-shiny-app-to-visualize-inequality">Step 2: Upgrading the Shiny App to Visualize Inequality</h2>
+<p>With our model now producing results for different groups, we need to upgrade our Shiny app to visualize them. A great way to do this is to add a new tab to our dashboard specifically for distributional analysis.</p>
+<p>We can add two powerful new plots:</p>
+<ol type="1">
+<li><strong>Welfare by Group:</strong> A line chart comparing the lifetime welfare (Equivalent Variation) of the high-income and low-income groups over time. This will immediately show us who wins and who loses from a policy change.</li>
+<li><strong>Gini Coefficient:</strong> A plot showing the evolution of the Gini coefficient for income or wealth. This gives us a standard, summary measure of overall inequality in the economy.</li>
+</ol>
+<section id="new-inequality-analysis-tab-in-shiny" class="level3">
+<h3 class="anchored" data-anchor-id="new-inequality-analysis-tab-in-shiny">New “Inequality Analysis” Tab in Shiny</h3>
+<p>Here’s how we could structure the UI and server logic for the new tab.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Conceptual R Code for Pension System Finances</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside the main simulation loop, after aggregating household behavior...</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total pension contributions from all working generations</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>AGPP[I] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) {</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sum up contributions from all relevant cohorts</span></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  AGPP[I] <span class="ot">&lt;-</span> AGPP[I] <span class="sc">+</span> PP[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>, J] <span class="sc">*</span> GENP[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>]</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<summary>New Shiny UI and Server Logic for Inequality</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- In the Quarto YAML Header ---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># format:</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   dashboard:</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">#     tabs:</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co">#       - title: &quot;Macro Results&quot;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co">#         icon: &quot;bar-chart&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co">#       - title: &quot;Inequality Analysis&quot;</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co">#         icon: &quot;people&quot;</span></span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total pension benefits for all retired generations</span></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>AGPR[I] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> (IRET<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>IDIE) {</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sum up benefits for all relevant cohorts</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  AGPR[I] <span class="ot">&lt;-</span> AGPR[I] <span class="sc">+</span> PR[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>, J] <span class="sc">*</span> GENP[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>]</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="co"># --- In the UI (as a new tab) ---</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># {r}</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co">#| panel: tabset</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co">#| title: &quot;Inequality Analysis&quot;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (code to render the new plots) ...</span></span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># In a pure PAYG system, we enforce AGPP[I] == AGPR[I].</span></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Typically, the model solves for the contribution rate (a tax)</span></span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co"># that is required to pay for a given level of benefits.</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="co"># --- In the Server Logic ---</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># renderPlot({</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   ... (run the heterogeneous simulation) ...</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Calculate welfare for each group</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="co">#   EVRT_group1 &lt;- calculate_welfare(C_group1, ...)</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   EVRT_group2 &lt;- calculate_welfare(C_group2, ...)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Combine into a single data frame for plotting</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   welfare_df &lt;- data.frame(</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="co">#     Generation = 1:ITER1,</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co">#     Welfare = c(EVRT_group1, EVRT_group2),</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a><span class="co">#     Group = rep(c(&quot;Low-Income&quot;, &quot;High-Income&quot;), each = ITER1)</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">#   )</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Plot welfare by group</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(welfare_df, aes(x = Generation, y = Welfare, color = Group)) +</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_line() +</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">#     labs(title = &quot;Lifetime Welfare by Income Group&quot;) +</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co">#     scale_color_manual(values = c(&quot;Low-Income&quot; = &quot;#D55E00&quot;, &quot;High-Income&quot; = &quot;#0072B2&quot;)) +</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">#     theme_minimal()</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Calculate and plot Gini coefficient...</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </details>
 </div>
 </section>
 </section>
-<section id="step-2-upgrading-the-shiny-application" class="level2">
-<h2 class="anchored" data-anchor-id="step-2-upgrading-the-shiny-application">Step 2: Upgrading the Shiny Application</h2>
-<p>The most exciting part is adding interactive controls for pension policy to our Shiny app. This will allow us to simulate major reforms with the click of a button. We’ll add two new sliders to the sidebar.</p>
-<div class="cell">
-<details class="code-fold">
-<summary>New Sliders for the Shiny App Sidebar</summary>
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#| panel: sidebar</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (existing sliders for taxes, etc.) ...</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Pension Policy Controls ---</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;replacement_rate&quot;</span>, <span class="st">&quot;Pension Replacement Rate (所得代替率)&quot;</span>, </span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.20</span>, <span class="at">max =</span> <span class="fl">0.60</span>, <span class="at">value =</span> <span class="fl">0.40</span>, <span class="at">step =</span> <span class="fl">0.05</span>)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;retire_age&quot;</span>, <span class="st">&quot;Retirement Age (退職年齢)&quot;</span>, </span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="dv">60</span>, <span class="at">max =</span> <span class="dv">70</span>, <span class="at">value =</span> <span class="dv">65</span>, <span class="at">step =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</details>
-</div>
-<p>With these controls, our Shiny app can now answer much more interesting questions:</p>
-<ul>
-<li><strong>What if we lower the generosity of pensions?</strong> We can move the <code>replacement_rate</code> slider down and watch how it affects the national savings rate and long-term GDP.</li>
-<li><strong>What if we increase the retirement age?</strong> We can move the <code>retire_age</code> slider up. This increases the number of contributors and reduces the number of beneficiaries, showing how it can alleviate fiscal pressure.</li>
-</ul>
-<p>The output panel of the app would be updated to include new plots, such as the evolution of the <strong>pension contribution rate</strong> over time.</p>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>By incorporating a public pension system, our OLG model becomes a far more powerful and relevant tool for policy analysis. It allows us to move beyond abstract economic theory and engage directly with the real-world trade-offs involved in social security reform.</p>
-<p>This upgrade demonstrates the modularity and extensibility of our R code. We were able to build upon our existing foundation to add a significant new feature. The next logical step? We could explore how these domestic policies interact with a global economy by opening our model to international capital flows.</p>
+<section id="conclusion-a-more-nuanced-view" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-a-more-nuanced-view">Conclusion: A More Nuanced View</h2>
+<p>By introducing heterogeneous agents, we have transformed our model from a tool that analyzes the “average” effect into one that can speak to the critical issue of <strong>distribution and inequality</strong>. This is a significant step towards building a more realistic and policy-relevant simulation. It allows us to ask nuanced questions and understand that the costs and benefits of economic policies are rarely shared equally.</p>
+<p>This upgrade showcases the power and flexibility of our R-based framework. Having built the model from the ground up, we can now extend and adapt it to explore ever more complex and interesting questions.</p>
 
 
 <!-- -->
@@ -4531,139 +4558,160 @@ vertical-align: -.125em;
     }
   });
   </script><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Source Code</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Upgrading the OLG Model: Adding a Public Pension System&quot;</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Part 5 of a series on converting &#39;Matlabによるマクロ経済モデル入門&#39; to R&quot;</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> &quot;2025-09-07&quot;</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Economics, OLG, Social Security, Shiny]</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction: Modeling Social Security</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>In our <span class="co">[</span><span class="ot">previous posts</span><span class="co">](https://okihik.github.io/versatile-note.github.io/posts/generationalAccountingModel/gam3.html)</span>, we successfully built a complete, interactive Overlapping Generations (OLG) model in R. While powerful, our model was missing a feature that is central to every modern economy: a **public pension system**. For most retirees, social security is the single most important source of income, and for workers, it&#39;s one of their largest mandatory expenses.</span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>No realistic analysis of long-term fiscal policy or demographic change can be complete without including it. The way a pension system is designed has profound effects on household savings decisions, national capital accumulation, and, most importantly, the distribution of resources between generations.</span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>In this post, we will upgrade our R model by incorporating a **pay-as-you-go public pension system**, following the <span class="in">`OLG2.m`</span> model from the textbook. This will allow us to analyze the effects of pension policy on the economy. We will then add interactive controls for these new policies to our Shiny application, creating an even more powerful tool for analysis.</span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="fu">## The Economics of a Pay-As-You-Go Pension System</span></span>
-<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>The model we&#39;ll build is a &quot;pay-as-you-go&quot; (PAYG) system, which is how social security works in most countries, including Japan. The logic is simple:</span>
-<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>The current **working generation** pays contributions (a tax on their wages).</span>
-<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>These contributions are **not saved or invested**. Instead, they are immediately transferred and paid out as benefits to the current **retired generation**.</span>
-<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>This creates a direct link between the generations and makes the system highly sensitive to demographics. When the population is young (many workers per retiree), the system is easy to sustain with low contribution rates. However, as the population ages (fewer workers per retiree), the financial pressure mounts, requiring either higher contribution rates for the young, lower benefits for the old, or some combination of both.</span>
-<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>From a modeling perspective, a PAYG pension system acts as a substitute for private savings. Because individuals expect to receive pension benefits in retirement, they have less incentive to save on their own. This &quot;crowding out&quot; of private savings is a key mechanism through which pension systems can affect a country&#39;s long-run capital stock and economic growth.</span>
-<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1: Modifying the R Code</span></span>
-<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>To add the pension system, we need to make two main changes to our R code:</span>
-<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Update the Household&#39;s Budget:** The lifetime budget constraint of each household must now include pension contributions (a cost during working years) and pension benefits (an income during retirement).</span>
-<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Add a Pension System Module:** We need a new block of code that manages the pension system&#39;s finances, ensuring that total benefits paid out equal total contributions collected in each period.</span>
-<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="fu">### Updating the Household Lifecycle</span></span>
-<span id="cb4-41"><a href="#cb4-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="#cb4-42" aria-hidden="true" tabindex="-1"></a>The core change happens when we solve for the household&#39;s consumption and savings path. Their lifetime resources are now affected by pension policy.</span>
-<span id="cb4-43"><a href="#cb4-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-46"><a href="#cb4-46" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-47"><a href="#cb4-47" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: pension-code-household</span></span>
-<span id="cb4-48"><a href="#cb4-48" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Conceptual R Code for Household with Pensions&quot;</span></span>
-<span id="cb4-49"><a href="#cb4-49" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb4-50"><a href="#cb4-50" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb4-51"><a href="#cb4-51" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-52"><a href="#cb4-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside the main simulation loop, when calculating a generation&#39;s resources...</span></span>
-<span id="cb4-53"><a href="#cb4-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-54"><a href="#cb4-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Lifetime resources are now reduced by lifetime pension contributions</span></span>
-<span id="cb4-55"><a href="#cb4-55" aria-hidden="true" tabindex="-1"></a><span class="co"># and increased by lifetime pension benefits.</span></span>
-<span id="cb4-56"><a href="#cb4-56" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-57"><a href="#cb4-57" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate lifetime resources for generation I</span></span>
-<span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) { <span class="co"># Working years</span></span>
-<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Subtract pension contributions (PP) from wage income</span></span>
-<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  PDVW <span class="ot">&lt;-</span> PDVW <span class="sc">+</span> (W[I<span class="sc">+</span>J<span class="dv">-1</span>]<span class="sc">*</span>SL[J]<span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span>TW) <span class="sc">-</span> PP[I,J]) <span class="sc">*</span> RR[J] </span>
-<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-62"><a href="#cb4-62" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> (IRET<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>IDIE) { <span class="co"># Retirement years</span></span>
-<span id="cb4-63"><a href="#cb4-63" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add pension benefits (PR) to retirement income</span></span>
-<span id="cb4-64"><a href="#cb4-64" aria-hidden="true" tabindex="-1"></a>  PDVW <span class="ot">&lt;-</span> PDVW <span class="sc">+</span> PR[I,J] <span class="sc">*</span> RR[J]</span>
-<span id="cb4-65"><a href="#cb4-65" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-66"><a href="#cb4-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-67"><a href="#cb4-67" aria-hidden="true" tabindex="-1"></a><span class="co"># The rest of the household&#39;s problem (choosing consumption) proceeds as before,</span></span>
-<span id="cb4-68"><a href="#cb4-68" aria-hidden="true" tabindex="-1"></a><span class="co"># but with this new, adjusted level of lifetime wealth.</span></span>
-<span id="cb4-69"><a href="#cb4-69" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-70"><a href="#cb4-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-71"><a href="#cb4-71" aria-hidden="true" tabindex="-1"></a><span class="fu">### Creating the Pension Finance Module</span></span>
-<span id="cb4-72"><a href="#cb4-72" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-73"><a href="#cb4-73" aria-hidden="true" tabindex="-1"></a>We also need to add logic that calculates the total contributions (<span class="in">`AGPP`</span>) and benefits (<span class="in">`AGPR`</span>) for the entire economy each year. In a simple PAYG system, these must be equal.</span>
-<span id="cb4-74"><a href="#cb4-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-77"><a href="#cb4-77" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-78"><a href="#cb4-78" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: pension-code-system</span></span>
-<span id="cb4-79"><a href="#cb4-79" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Conceptual R Code for Pension System Finances&quot;</span></span>
-<span id="cb4-80"><a href="#cb4-80" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb4-81"><a href="#cb4-81" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb4-82"><a href="#cb4-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-83"><a href="#cb4-83" aria-hidden="true" tabindex="-1"></a><span class="co"># Inside the main simulation loop, after aggregating household behavior...</span></span>
-<span id="cb4-84"><a href="#cb4-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-85"><a href="#cb4-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total pension contributions from all working generations</span></span>
-<span id="cb4-86"><a href="#cb4-86" aria-hidden="true" tabindex="-1"></a>AGPP[I] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-87"><a href="#cb4-87" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) {</span>
-<span id="cb4-88"><a href="#cb4-88" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sum up contributions from all relevant cohorts</span></span>
-<span id="cb4-89"><a href="#cb4-89" aria-hidden="true" tabindex="-1"></a>  AGPP[I] <span class="ot">&lt;-</span> AGPP[I] <span class="sc">+</span> PP[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>, J] <span class="sc">*</span> GENP[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>]</span>
-<span id="cb4-90"><a href="#cb4-90" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-91"><a href="#cb4-91" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-92"><a href="#cb4-92" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate total pension benefits for all retired generations</span></span>
-<span id="cb4-93"><a href="#cb4-93" aria-hidden="true" tabindex="-1"></a>AGPR[I] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb4-94"><a href="#cb4-94" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> (IRET<span class="sc">+</span><span class="dv">1</span>)<span class="sc">:</span>IDIE) {</span>
-<span id="cb4-95"><a href="#cb4-95" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Sum up benefits for all relevant cohorts</span></span>
-<span id="cb4-96"><a href="#cb4-96" aria-hidden="true" tabindex="-1"></a>  AGPR[I] <span class="ot">&lt;-</span> AGPR[I] <span class="sc">+</span> PR[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>, J] <span class="sc">*</span> GENP[I<span class="sc">-</span>J<span class="sc">+</span><span class="dv">1</span>]</span>
-<span id="cb4-97"><a href="#cb4-97" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-98"><a href="#cb4-98" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-99"><a href="#cb4-99" aria-hidden="true" tabindex="-1"></a><span class="co"># In a pure PAYG system, we enforce AGPP[I] == AGPR[I].</span></span>
-<span id="cb4-100"><a href="#cb4-100" aria-hidden="true" tabindex="-1"></a><span class="co"># Typically, the model solves for the contribution rate (a tax)</span></span>
-<span id="cb4-101"><a href="#cb4-101" aria-hidden="true" tabindex="-1"></a><span class="co"># that is required to pay for a given level of benefits.</span></span>
-<span id="cb4-102"><a href="#cb4-102" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-103"><a href="#cb4-103" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-104"><a href="#cb4-104" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2: Upgrading the Shiny Application</span></span>
-<span id="cb4-105"><a href="#cb4-105" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-106"><a href="#cb4-106" aria-hidden="true" tabindex="-1"></a>The most exciting part is adding interactive controls for pension policy to our Shiny app. This will allow us to simulate major reforms with the click of a button. We&#39;ll add two new sliders to the sidebar.</span>
-<span id="cb4-107"><a href="#cb4-107" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-110"><a href="#cb4-110" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
-<span id="cb4-111"><a href="#cb4-111" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: shiny-pension-sliders</span></span>
-<span id="cb4-112"><a href="#cb4-112" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;New Sliders for the Shiny App Sidebar&quot;</span></span>
-<span id="cb4-113"><a href="#cb4-113" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
-<span id="cb4-114"><a href="#cb4-114" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
-<span id="cb4-115"><a href="#cb4-115" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-116"><a href="#cb4-116" aria-hidden="true" tabindex="-1"></a><span class="co">#| panel: sidebar</span></span>
-<span id="cb4-117"><a href="#cb4-117" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-118"><a href="#cb4-118" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (existing sliders for taxes, etc.) ...</span></span>
-<span id="cb4-119"><a href="#cb4-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-120"><a href="#cb4-120" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Pension Policy Controls ---</span></span>
-<span id="cb4-121"><a href="#cb4-121" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;replacement_rate&quot;</span>, <span class="st">&quot;Pension Replacement Rate (所得代替率)&quot;</span>, </span>
-<span id="cb4-122"><a href="#cb4-122" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="fl">0.20</span>, <span class="at">max =</span> <span class="fl">0.60</span>, <span class="at">value =</span> <span class="fl">0.40</span>, <span class="at">step =</span> <span class="fl">0.05</span>)</span>
-<span id="cb4-123"><a href="#cb4-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-124"><a href="#cb4-124" aria-hidden="true" tabindex="-1"></a><span class="fu">sliderInput</span>(<span class="st">&quot;retire_age&quot;</span>, <span class="st">&quot;Retirement Age (退職年齢)&quot;</span>, </span>
-<span id="cb4-125"><a href="#cb4-125" aria-hidden="true" tabindex="-1"></a>            <span class="at">min =</span> <span class="dv">60</span>, <span class="at">max =</span> <span class="dv">70</span>, <span class="at">value =</span> <span class="dv">65</span>, <span class="at">step =</span> <span class="dv">1</span>)</span>
-<span id="cb4-126"><a href="#cb4-126" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb4-127"><a href="#cb4-127" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-128"><a href="#cb4-128" aria-hidden="true" tabindex="-1"></a>With these controls, our Shiny app can now answer much more interesting questions:</span>
-<span id="cb4-129"><a href="#cb4-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-130"><a href="#cb4-130" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**What if we lower the generosity of pensions?** We can move the <span class="in">`replacement_rate`</span> slider down and watch how it affects the national savings rate and long-term GDP.</span>
-<span id="cb4-131"><a href="#cb4-131" aria-hidden="true" tabindex="-1"></a><span class="ss">-   </span>**What if we increase the retirement age?** We can move the <span class="in">`retire_age`</span> slider up. This increases the number of contributors and reduces the number of beneficiaries, showing how it can alleviate fiscal pressure.</span>
-<span id="cb4-132"><a href="#cb4-132" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-133"><a href="#cb4-133" aria-hidden="true" tabindex="-1"></a>The output panel of the app would be updated to include new plots, such as the evolution of the **pension contribution rate** over time.</span>
-<span id="cb4-134"><a href="#cb4-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-135"><a href="#cb4-135" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion</span></span>
-<span id="cb4-136"><a href="#cb4-136" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-137"><a href="#cb4-137" aria-hidden="true" tabindex="-1"></a>By incorporating a public pension system, our OLG model becomes a far more powerful and relevant tool for policy analysis. It allows us to move beyond abstract economic theory and engage directly with the real-world trade-offs involved in social security reform.</span>
-<span id="cb4-138"><a href="#cb4-138" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-139"><a href="#cb4-139" aria-hidden="true" tabindex="-1"></a>This upgrade demonstrates the modularity and extensibility of our R code. We were able to build upon our existing foundation to add a significant new feature. The next logical step? We could explore how these domestic policies interact with a global economy by opening our model to international capital flows.</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" data-shortcodes="false"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">title:</span><span class="co"> &quot;Modeling Inequality: Adding Heterogeneous Agents to the OLG Model&quot;</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="an">subtitle:</span><span class="co"> &quot;Part 6 of a series on converting &#39;Matlabによるマクロ経済モデル入門&#39; to R&quot;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="an">author:</span><span class="co"> &quot;Your Name&quot;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="an">date:</span><span class="co"> &quot;2025-09-08&quot;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="an">categories:</span><span class="co"> [R, Economics, OLG, Inequality, Shiny]</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="an">format:</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="co">  html:</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co">    toc: true</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="co">    code-fold: true</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="co">    code-tools: true</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="co">    self-contained: true</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="fu">## Introduction: Beyond the &quot;Average&quot; Household</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>In our series so far, we&#39;ve built a powerful model of the economy. However, it has a significant simplification: it assumes everyone within a generation is identical. The &quot;representative agent&quot; in our model is an average of everyone, but as the saying goes, if you have one foot in a bucket of ice and the other in a bucket of hot coals, on average you&#39;re comfortable—but the average is misleading.</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>The real world is characterized by **heterogeneity**. People have different skills, earn different wages, and accumulate different amounts of wealth. These differences are not just details; they are central to understanding how economic policies truly affect society. A policy that is beneficial on average might still create significant winners and losers.</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>In this post, we will make a major upgrade to our OLG model by introducing **heterogeneous agents**. We will move from a model with one type of household to one with multiple, distinct income groups. This will allow us to analyze the distributional consequences of economic policies and explore the dynamics of inequality.</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="fu">## The &quot;Why&quot; and &quot;How&quot; of Heterogeneity</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>The textbook we&#39;ve been following, &quot;Matlabによるマクロ経済モデル入門,&quot; introduces this concept in Chapter 7. The core idea is to segment the population into different groups based on their lifetime earning potential.</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>**Why is this important?**</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Analyzing Inequality:** It&#39;s impossible to talk about inequality with a model that assumes everyone is the same. By including different income groups, we can track metrics like the **Gini coefficient** or the wealth gap between the rich and the poor.</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**More Realistic Macroeconomics:** Different income groups behave differently. High-income households, for example, typically save a larger fraction of their income. This means that the overall national savings rate depends not just on the average income, but on the *distribution* of that income.</span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="ss">3.  </span>**Distributional Effects of Policy:** A flat consumption tax is felt more heavily by low-income households who consume a larger share of their income. A change in pension benefits might be a minor issue for a wealthy retiree but a critical one for a poor retiree. Our new model can capture these effects.</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>**How do we implement it?**</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>The key is to create different **labor efficiency profiles (`SL`)** for each group. A &quot;high-skill&quot; group will have a higher efficiency profile, meaning they earn a higher wage at every age, while a &quot;low-skill&quot; group will have a lower profile. We then simulate the lifecycle decisions for *each group separately* before aggregating them to get the macroeconomic totals.</span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 1: Modifying the R Code for Multiple Household Types</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>The biggest change to our R code is that we now need to loop through our different household types. Instead of calculating one path for consumption and assets, we need to calculate a set of paths for each group.</span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>Let&#39;s say we define two groups: <span class="in">`group_1`</span> (low-income) and <span class="in">`group_2`</span> (high-income).</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: heterogeneity-code</span></span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;Conceptual R Code for Heterogeneous Agents&quot;</span></span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Define different labor efficiency profiles for each group ---</span></span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>SL_group1 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE)</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>SL_group2 <span class="ot">&lt;-</span> <span class="fu">numeric</span>(IDIE)</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (J <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>IRET) {</span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Low-income profile (e.g., lower intercept and slope)</span></span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  SL_group1[J] <span class="ot">&lt;-</span> <span class="fl">1.0</span> <span class="sc">+</span> <span class="fl">0.10</span> <span class="sc">*</span> J <span class="sc">-</span> <span class="fl">0.0020</span> <span class="sc">*</span> J<span class="sc">^</span><span class="dv">2</span> </span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>  <span class="co"># High-income profile (e.g., higher intercept and slope)</span></span>
+<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>  SL_group2[J] <span class="ot">&lt;-</span> <span class="fl">1.8</span> <span class="sc">+</span> <span class="fl">0.15</span> <span class="sc">*</span> J <span class="sc">-</span> <span class="fl">0.0025</span> <span class="sc">*</span> J<span class="sc">^</span><span class="dv">2</span> </span>
+<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a><span class="co"># --- The main simulation loop now needs an outer loop for groups ---</span></span>
+<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize matrices to hold results for each group</span></span>
+<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>C_group1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>AA_group1 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a>C_group2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>AA_group2 <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="dv">0</span>, <span class="at">nrow =</span> ITER1, <span class="at">ncol =</span> IDIE)</span>
+<span id="cb3-68"><a href="#cb3-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-69"><a href="#cb3-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the household problem for each group</span></span>
+<span id="cb3-70"><a href="#cb3-70" aria-hidden="true" tabindex="-1"></a><span class="co"># (This would be inside the main `while` convergence loop)</span></span>
+<span id="cb3-71"><a href="#cb3-71" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb3-72"><a href="#cb3-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for Group 1 using SL_group1 -&gt; get C_group1, AA_group1</span></span>
+<span id="cb3-73"><a href="#cb3-73" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb3-74"><a href="#cb3-74" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve for Group 2 using SL_group2 -&gt; get C_group2, AA_group2</span></span>
+<span id="cb3-75"><a href="#cb3-75" aria-hidden="true" tabindex="-1"></a><span class="co"># ...</span></span>
+<span id="cb3-76"><a href="#cb3-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-77"><a href="#cb3-77" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Macroeconomic aggregation now sums across groups ---</span></span>
+<span id="cb3-78"><a href="#cb3-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Let&#39;s say Group 1 is 60% of the population and Group 2 is 40%</span></span>
+<span id="cb3-79"><a href="#cb3-79" aria-hidden="true" tabindex="-1"></a>pop_share_g1 <span class="ot">&lt;-</span> <span class="fl">0.6</span></span>
+<span id="cb3-80"><a href="#cb3-80" aria-hidden="true" tabindex="-1"></a>pop_share_g2 <span class="ot">&lt;-</span> <span class="fl">0.4</span></span>
+<span id="cb3-81"><a href="#cb3-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-82"><a href="#cb3-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate Consumption (AGC)</span></span>
+<span id="cb3-83"><a href="#cb3-83" aria-hidden="true" tabindex="-1"></a>AGC[I] <span class="ot">&lt;-</span> (<span class="fu">sum</span>(C_group1[...]) <span class="sc">*</span> pop_share_g1) <span class="sc">+</span> (<span class="fu">sum</span>(C_group2[...]) <span class="sc">*</span> pop_share_g2)</span>
+<span id="cb3-84"><a href="#cb3-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-85"><a href="#cb3-85" aria-hidden="true" tabindex="-1"></a><span class="co"># Aggregate Assets (PASET)</span></span>
+<span id="cb3-86"><a href="#cb3-86" aria-hidden="true" tabindex="-1"></a>PASET[I] <span class="ot">&lt;-</span> (<span class="fu">sum</span>(AA_group1[...]) <span class="sc">*</span> pop_share_g1) <span class="sc">+</span> (<span class="fu">sum</span>(AA_group2[...]) <span class="sc">*</span> pop_share_g2)</span>
+<span id="cb3-87"><a href="#cb3-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-88"><a href="#cb3-88" aria-hidden="true" tabindex="-1"></a><span class="co"># ... and so on for other aggregate variables.</span></span>
+<span id="cb3-89"><a href="#cb3-89" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-90"><a href="#cb3-90" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" aria-hidden="true" tabindex="-1"></a><span class="fu">## Step 2: Upgrading the Shiny App to Visualize Inequality</span></span>
+<span id="cb3-92"><a href="#cb3-92" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-93"><a href="#cb3-93" aria-hidden="true" tabindex="-1"></a>With our model now producing results for different groups, we need to upgrade our Shiny app to visualize them. A great way to do this is to add a new tab to our dashboard specifically for distributional analysis.</span>
+<span id="cb3-94"><a href="#cb3-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-95"><a href="#cb3-95" aria-hidden="true" tabindex="-1"></a>We can add two powerful new plots:</span>
+<span id="cb3-96"><a href="#cb3-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-97"><a href="#cb3-97" aria-hidden="true" tabindex="-1"></a><span class="ss">1.  </span>**Welfare by Group:** A line chart comparing the lifetime welfare (Equivalent Variation) of the high-income and low-income groups over time. This will immediately show us who wins and who loses from a policy change.</span>
+<span id="cb3-98"><a href="#cb3-98" aria-hidden="true" tabindex="-1"></a><span class="ss">2.  </span>**Gini Coefficient:** A plot showing the evolution of the Gini coefficient for income or wealth. This gives us a standard, summary measure of overall inequality in the economy.</span>
+<span id="cb3-99"><a href="#cb3-99" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-100"><a href="#cb3-100" aria-hidden="true" tabindex="-1"></a><span class="fu">### New &quot;Inequality Analysis&quot; Tab in Shiny</span></span>
+<span id="cb3-101"><a href="#cb3-101" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-102"><a href="#cb3-102" aria-hidden="true" tabindex="-1"></a>Here&#39;s how we could structure the UI and server logic for the new tab.</span>
+<span id="cb3-103"><a href="#cb3-103" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-106"><a href="#cb3-106" aria-hidden="true" tabindex="-1"></a><span class="in">```{r}</span></span>
+<span id="cb3-107"><a href="#cb3-107" aria-hidden="true" tabindex="-1"></a><span class="co">#| label: shiny-inequality-tab</span></span>
+<span id="cb3-108"><a href="#cb3-108" aria-hidden="true" tabindex="-1"></a><span class="co">#| code-summary: &quot;New Shiny UI and Server Logic for Inequality&quot;</span></span>
+<span id="cb3-109"><a href="#cb3-109" aria-hidden="true" tabindex="-1"></a><span class="co">#| eval: false</span></span>
+<span id="cb3-110"><a href="#cb3-110" aria-hidden="true" tabindex="-1"></a><span class="co">#| echo: true</span></span>
+<span id="cb3-111"><a href="#cb3-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-112"><a href="#cb3-112" aria-hidden="true" tabindex="-1"></a><span class="co"># --- In the Quarto YAML Header ---</span></span>
+<span id="cb3-113"><a href="#cb3-113" aria-hidden="true" tabindex="-1"></a><span class="co"># format:</span></span>
+<span id="cb3-114"><a href="#cb3-114" aria-hidden="true" tabindex="-1"></a><span class="co">#   dashboard:</span></span>
+<span id="cb3-115"><a href="#cb3-115" aria-hidden="true" tabindex="-1"></a><span class="co">#     tabs:</span></span>
+<span id="cb3-116"><a href="#cb3-116" aria-hidden="true" tabindex="-1"></a><span class="co">#       - title: &quot;Macro Results&quot;</span></span>
+<span id="cb3-117"><a href="#cb3-117" aria-hidden="true" tabindex="-1"></a><span class="co">#         icon: &quot;bar-chart&quot;</span></span>
+<span id="cb3-118"><a href="#cb3-118" aria-hidden="true" tabindex="-1"></a><span class="co">#       - title: &quot;Inequality Analysis&quot;</span></span>
+<span id="cb3-119"><a href="#cb3-119" aria-hidden="true" tabindex="-1"></a><span class="co">#         icon: &quot;people&quot;</span></span>
+<span id="cb3-120"><a href="#cb3-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-121"><a href="#cb3-121" aria-hidden="true" tabindex="-1"></a><span class="co"># --- In the UI (as a new tab) ---</span></span>
+<span id="cb3-122"><a href="#cb3-122" aria-hidden="true" tabindex="-1"></a><span class="co"># {r}</span></span>
+<span id="cb3-123"><a href="#cb3-123" aria-hidden="true" tabindex="-1"></a><span class="co">#| panel: tabset</span></span>
+<span id="cb3-124"><a href="#cb3-124" aria-hidden="true" tabindex="-1"></a><span class="co">#| title: &quot;Inequality Analysis&quot;</span></span>
+<span id="cb3-125"><a href="#cb3-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-126"><a href="#cb3-126" aria-hidden="true" tabindex="-1"></a><span class="co"># ... (code to render the new plots) ...</span></span>
+<span id="cb3-127"><a href="#cb3-127" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-128"><a href="#cb3-128" aria-hidden="true" tabindex="-1"></a><span class="co"># --- In the Server Logic ---</span></span>
+<span id="cb3-129"><a href="#cb3-129" aria-hidden="true" tabindex="-1"></a><span class="co"># renderPlot({</span></span>
+<span id="cb3-130"><a href="#cb3-130" aria-hidden="true" tabindex="-1"></a><span class="co">#   ... (run the heterogeneous simulation) ...</span></span>
+<span id="cb3-131"><a href="#cb3-131" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-132"><a href="#cb3-132" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Calculate welfare for each group</span></span>
+<span id="cb3-133"><a href="#cb3-133" aria-hidden="true" tabindex="-1"></a><span class="co">#   EVRT_group1 &lt;- calculate_welfare(C_group1, ...)</span></span>
+<span id="cb3-134"><a href="#cb3-134" aria-hidden="true" tabindex="-1"></a><span class="co">#   EVRT_group2 &lt;- calculate_welfare(C_group2, ...)</span></span>
+<span id="cb3-135"><a href="#cb3-135" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-136"><a href="#cb3-136" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Combine into a single data frame for plotting</span></span>
+<span id="cb3-137"><a href="#cb3-137" aria-hidden="true" tabindex="-1"></a><span class="co">#   welfare_df &lt;- data.frame(</span></span>
+<span id="cb3-138"><a href="#cb3-138" aria-hidden="true" tabindex="-1"></a><span class="co">#     Generation = 1:ITER1,</span></span>
+<span id="cb3-139"><a href="#cb3-139" aria-hidden="true" tabindex="-1"></a><span class="co">#     Welfare = c(EVRT_group1, EVRT_group2),</span></span>
+<span id="cb3-140"><a href="#cb3-140" aria-hidden="true" tabindex="-1"></a><span class="co">#     Group = rep(c(&quot;Low-Income&quot;, &quot;High-Income&quot;), each = ITER1)</span></span>
+<span id="cb3-141"><a href="#cb3-141" aria-hidden="true" tabindex="-1"></a><span class="co">#   )</span></span>
+<span id="cb3-142"><a href="#cb3-142" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-143"><a href="#cb3-143" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Plot welfare by group</span></span>
+<span id="cb3-144"><a href="#cb3-144" aria-hidden="true" tabindex="-1"></a><span class="co">#   ggplot(welfare_df, aes(x = Generation, y = Welfare, color = Group)) +</span></span>
+<span id="cb3-145"><a href="#cb3-145" aria-hidden="true" tabindex="-1"></a><span class="co">#     geom_line() +</span></span>
+<span id="cb3-146"><a href="#cb3-146" aria-hidden="true" tabindex="-1"></a><span class="co">#     labs(title = &quot;Lifetime Welfare by Income Group&quot;) +</span></span>
+<span id="cb3-147"><a href="#cb3-147" aria-hidden="true" tabindex="-1"></a><span class="co">#     scale_color_manual(values = c(&quot;Low-Income&quot; = &quot;#D55E00&quot;, &quot;High-Income&quot; = &quot;#0072B2&quot;)) +</span></span>
+<span id="cb3-148"><a href="#cb3-148" aria-hidden="true" tabindex="-1"></a><span class="co">#     theme_minimal()</span></span>
+<span id="cb3-149"><a href="#cb3-149" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb3-150"><a href="#cb3-150" aria-hidden="true" tabindex="-1"></a><span class="co">#   # Calculate and plot Gini coefficient...</span></span>
+<span id="cb3-151"><a href="#cb3-151" aria-hidden="true" tabindex="-1"></a><span class="co"># })</span></span>
+<span id="cb3-152"><a href="#cb3-152" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb3-153"><a href="#cb3-153" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-154"><a href="#cb3-154" aria-hidden="true" tabindex="-1"></a><span class="fu">## Conclusion: A More Nuanced View</span></span>
+<span id="cb3-155"><a href="#cb3-155" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-156"><a href="#cb3-156" aria-hidden="true" tabindex="-1"></a>By introducing heterogeneous agents, we have transformed our model from a tool that analyzes the &quot;average&quot; effect into one that can speak to the critical issue of **distribution and inequality**. This is a significant step towards building a more realistic and policy-relevant simulation. It allows us to ask nuanced questions and understand that the costs and benefits of economic policies are rarely shared equally.</span>
+<span id="cb3-157"><a href="#cb3-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-158"><a href="#cb3-158" aria-hidden="true" tabindex="-1"></a>This upgrade showcases the power and flexibility of our R-based framework. Having built the model from the ground up, we can now extend and adapt it to explore ever more complex and interesting questions.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
