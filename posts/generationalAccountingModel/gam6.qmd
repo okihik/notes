@@ -1,7 +1,7 @@
 ---
 title: "Going Global: An Open-Economy OLG Model with International Capital Flows"
 subtitle: "Part 7 of a series on converting 'Matlabによるマクロ経済モデル入門' to R"
-date: "2025-09-09"
+date: "2025-10-10"
 categories: [R, Economics, OLG, International Finance, Shiny]
 format:
   html:
