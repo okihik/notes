@@ -23,8 +23,8 @@ In this post, we will explore a much more powerful and modern solution: combinin
 
 Our current method, calibration, is a pragmatic starting point. We pick a set of parameters, run the model, and see if the output looks "reasonable" compared to reality.
 
-*   **The Strength:** It's simple, fast, and allows us to build complex models without getting bogged down in statistical estimation.
-*   **The Weakness:** It's fundamentally unscientific in how it treats uncertainty. It produces a single forecast path, giving a false sense of precision. We get one answer, but we have no idea if it's the right answer, or even how likely it is to be right.
+-   **The Strength:** It's simple, fast, and allows us to build complex models without getting bogged down in statistical estimation.
+-   **The Weakness:** It's fundamentally unscientific in how it treats uncertainty. It produces a single forecast path, giving a false sense of precision. We get one answer, but we have no idea if it's the right answer, or even how likely it is to be right.
 
 This is where the Bayesian framework provides a revolutionary alternative.
 

@@ -23,8 +23,8 @@ In this post, we will undertake a major upgrade to our model by opening it up to
 
 What happens when we allow capital to move freely between countries? The central mechanism is the **equalization of returns**.
 
-*   **The Logic:** If the return on investment (the interest rate) is higher in Country A than in Country B, rational investors in Country B will move their savings to Country A to get the higher return. This outflow of capital from Country B will make capital scarcer there, driving up its interest rate. Conversely, the inflow of capital to Country A will make capital more abundant, driving down its interest rate. This process continues until the risk-adjusted return on capital is the same everywhere.
-*   **The Implication:** In our model, this means we no longer have a separate interest rate for each country. Instead, there is a single **world interest rate**.
+-   **The Logic:** If the return on investment (the interest rate) is higher in Country A than in Country B, rational investors in Country B will move their savings to Country A to get the higher return. This outflow of capital from Country B will make capital scarcer there, driving up its interest rate. Conversely, the inflow of capital to Country A will make capital more abundant, driving down its interest rate. This process continues until the risk-adjusted return on capital is the same everywhere.
+-   **The Implication:** In our model, this means we no longer have a separate interest rate for each country. Instead, there is a single **world interest rate**.
 
 This seemingly small change has profound consequences:
 
